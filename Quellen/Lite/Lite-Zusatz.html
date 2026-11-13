@@ -1,0 +1,464 @@
+<!-- ════════════════════════════════════════════════════════════════════════════
+  SCORM-AutorenStudio Lite – Zusatz zum SCORM-AutorenStudio
+  Wird von Quellen\werkzeuge\bauen.ps1 an das Ende einer Kopie von
+  SCORM-AutorenStudio.html gehängt (vor </body>). Ergebnis: SCORM-AutorenStudio-Lite.html.
+
+  Die Lite-Ausgabe nutzt denselben Lernpaket-Motor wie das große Studio
+  (Speichern, PDF-Übernahme, Fragen, Lernpaket-Erstellung, Sicherheitsregeln).
+  Hier werden nur die ANSICHTEN ersetzt: weniger Knöpfe, ein klarer Ablauf
+  Seiten → Abschlusstest (freiwillig) → für Moodle speichern.
+  Nicht direkt in SCORM-AutorenStudio-Lite.html ändern, sondern hier – sonst
+  geht die Änderung beim nächsten Bauen verloren.
+
+  Copyright (c) 2026 Sven-Michael Kern · Lizenziert unter der EUPL, Version 1.2 oder neuer
+═════════════════════════════════════════════════════════════════════════════ -->
+<style>
+  /* Zwischenüberschrift im Seitenmenü (Name des Abschnitts), darunter die nummerierten Seiten */
+  .lite-abschnitt { font-size: 12px; font-weight: 700; color: var(--mut); padding: 12px 10px 3px; }
+  .lite-nr { display: inline-block; min-width: 1.6em; color: var(--mut); }
+  .lite-schritte { counter-reset: none; }
+  .lite-ein-schritt .schritt-kopf { display: none; }
+  .lite-folie .schritt-medium { display: none; }
+  #schritte [data-a="video"], #schritte [data-a="untertitel"], #schritte [data-a="kopie"] { display: none; }
+  .lite-ablauf { margin: 18px 0 8px; color: var(--text); }   /* steht auf dem Hintergrundmuster der Startseite – darum in normaler Schriftfarbe, nicht gedämpft */
+  .lite-blaettern { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+</style>
+<script>
+// ── Lite: Kopfzeile ───────────────────────────────────────────────────────────
+// Marke oben links: Name der vereinfachten Ausgabe (VARIANTE.liteMarke), das Zeichen „S“ hell mit farbigem Rand (wie das Symbol im Browser-Tab)
+$('markeName').innerHTML = '<b>SCORM</b> ' + esc(VARIANTE.liteMarke);
+$('markeZeichen').classList.add('lite');
+// Die Zeitleiste der Freien Folie gibt es nur im SCORM-AutorenStudio (abgespielt wird sie trotzdem, Daten bleiben erhalten)
+FOLIE_ZEITLEISTE = false;
+$('btnNeuUebung').style.display = 'none';
+$('btnNeu').textContent = '✚ Neues Lernpaket';
+$('btnNeu').title = 'Neues Lernpaket erstellen';
+$('btnNeu').onclick = () => kursNeu();
+$('btnOeffnen').title = 'Ein angelegtes Lernpaket öffnen';
+$('versionAnzeige').textContent = 'v' + STUDIO_VERSION;
+$('btnHilfe').onclick = () => liteHilfe();
+
+// Kurzanleitung in einfacher Sprache; die ausführliche Anleitung des großen Studios bleibt erreichbar (F1)
+function liteHilfe() {
+  modalZeigen('So geht’s – in 4 Schritten', `
+    <ol style="margin-top:0;line-height:1.6;">
+      <li><b>Lernpaket anlegen:</b> Auf der Startseite „Neues Lernpaket erstellen“ – oder „Aus PowerPoint“ bzw. „Aus PDF“, wenn die Vortragsfolien schon vorliegen (jede Folie wird dann eine Seite). Alte .ppt-Dateien vorher in PowerPoint als .pptx speichern. Ein Aussehen wählen, danach einen <b>leeren Ordner</b> – dort wird alles gespeichert. Das Aussehen lässt sich später unter „⚙ Titel, Begrüßung und Aussehen“ ändern.</li>
+      <li><b>Seiten füllen:</b> Links eine Seite anklicken. Überschrift eintragen, Text schreiben, rechts daneben auf Wunsch ein Bild wählen. Mit „Nächste Seite“ geht es weiter. Weitere Folien aus PowerPoint hängst du links mit „📥 Folien aus PowerPoint hinzufügen“ an.</li>
+      <li><b>Frei gestalten wie in PowerPoint:</b> Links „＋ 🎨 Freie Folie hinzufügen“ (oder im Text der Knopf „🎨 Freie Folie“). Dort Textfelder, farbige Kästen, Formen, Bilder, Icons und Pfeile einfügen und mit der Maus verschieben, vergrößern und drehen. Doppelklick auf einen Kasten = Text schreiben. Auf Wunsch mit Animationen.</li>
+      <li><b>Abschlusstest (freiwillig):</b> Links „🏁 Abschlusstest“ – einschalten und ein paar Fragen anlegen. Das Ergebnis geht als Bewertung an Moodle.</li>
+      <li><b>Für Moodle speichern:</b> Links „📦 Für Moodle speichern“. Die fertige ZIP-Datei in Moodle als Aktivität „Lernpaket (SCORM)“ hochladen.</li>
+    </ol>
+    <p><b>Speichern:</b> Knopf „💾 Speichern“ oben oder Strg + S. Beim Erstellen des Lernpakets wird automatisch gespeichert.</p>
+    <p><b>Später weitermachen:</b> „📂 Öffnen“ und denselben Ordner wählen.</p>
+    <p class="hint">Mehr Möglichkeiten (Module, Videos, interaktive Bausteine, Übungen, andere Layouts) bietet das große SCORM-AutorenStudio (${esc(VARIANTE.studioDatei)}). Ein Lernpaket aus dem ${esc(VARIANTE.liteName)} lässt sich dort jederzeit weiterbearbeiten. Ausführliche Anleitung: Taste F1.</p>
+    <div class="ff-modal-knoepfe"><button type="button" id="lhOk">Verstanden</button></div>`);
+  $('lhOk').onclick = () => modalZu();
+}
+
+// ── Lite: Startseite ─────────────────────────────────────────────────────────
+function startZeigen() {
+  const offen = KURS ? KURS.titel : '';
+  $('editor').innerHTML = `${EMBLEM_PNG ? `<img src="${EMBLEM_PNG}" alt="" class="start-emblem">` : ''}
+  <div class="start">
+    <h1 class="marken-logo"><span class="ml-mark">S</span><span class="ml-scorm">SCORM</span><span class="ml-studio">${esc(VARIANTE.liteMarke)}</span></h1>
+    <p class="lead">Einen Vortrag ganz einfach als Lernpaket für Moodle verpacken – ohne Vorkenntnisse.</p>
+    ${offen ? `<div class="msg ok">Geöffnet: <b>${esc(offen)}</b>${UNGESPEICHERT ? ' · <b>ungespeicherte Änderungen</b> (bleiben erhalten)' : ''} &nbsp; <button type="button" class="klein" id="weiterKurs">Weiter bearbeiten →</button></div>` : ''}
+    <div class="karten">
+      <div class="karte"><div class="gross">✚</div><h2>Neues Lernpaket</h2><p>Seite für Seite anlegen: Überschrift, Text und auf Wunsch ein Bild.</p><div class="aktionen"><button type="button" id="sKurs">Neues Lernpaket erstellen</button></div></div>
+      <div class="karte"><div class="gross">📊</div><h2>Aus PowerPoint</h2><p>Eine vorhandene Präsentation übernehmen: Jede Folie wird eine Seite – mit Text, Bildern und auf Wunsch den Sprechernotizen.</p><div class="aktionen"><button type="button" id="sPpt">PowerPoint übernehmen</button></div></div>
+      <div class="karte"><div class="gross">📄</div><h2>Aus PDF</h2><p>Die Vortragsfolien liegen schon als PDF vor? Der Text wird automatisch in Seiten aufgeteilt.</p><div class="aktionen"><button type="button" id="sPdf">PDF übernehmen</button></div></div>
+      <div class="karte"><div class="gross">📂</div><h2>Weitermachen</h2><p>Ein schon angelegtes Lernpaket öffnen und weiterbearbeiten.</p><div class="aktionen"><button type="button" class="sec" id="sOeffnen">Lernpaket öffnen</button></div></div>
+    </div>
+    <p class="lite-ablauf"><b>So geht’s:</b> Neues Lernpaket erstellen (oben) → ① Seiten füllen → ② Abschlusstest (freiwillig) → ③ als ZIP-Datei für Moodle speichern. Die Schritte ①–③ erscheinen links, sobald ein Lernpaket geöffnet ist.</p>
+    ${window.showDirectoryPicker ? '' : `<div class="msg warn"><b>Hinweis:</b> Dieser Browser kann nicht direkt in Ordner speichern. Ziehe den Lernpaket-Ordner unten hinein; am Ende lädst du ihn als ZIP herunter. Besser: Chrome oder Edge.</div>
+    <div class="drop" id="dropOrdner"><b>Lernpaket-Ordner hierher ziehen</b><br><label class="btn sec" style="display:inline-block;margin-top:8px;">Ordner auswählen<input type="file" id="ordnerInput" webkitdirectory class="hidden"></label></div>`}
+    <p class="hint start-kurzhilfe">Hilfe in einfachen Worten: oben rechts <b>? Hilfe</b>.</p></div>`;
+  $('sKurs').onclick = () => kursNeu();
+  $('sPdf').onclick = () => pdfDialog();
+  $('sPpt').onclick = () => pptDialog(null, true);
+  $('sOeffnen').onclick = () => ordnerOeffnen();
+  if ($('weiterKurs')) $('weiterKurs').onclick = () => { AUSWAHL = KURS.module.some(m => m.seiten.length) ? { art: 'seite', m: KURS.module.findIndex(m => m.seiten.length), s: 0 } : { art: 'kurs' }; baumZeigen(); editorZeigen(); };
+  const drop = $('dropOrdner');
+  if (drop) {
+    dropZone(drop, async dt => ordnerAusAblage(await ablageLesen(dt)));
+    $('ordnerInput').onchange = e => ordnerAusAblage([...e.target.files].map(f => ({ datei: f, pfad: f.webkitRelativePath })));
+  }
+}
+
+// ── Lite: Aussehen (Layout) wählen – alle eingebauten Layouts, ohne Layout-Verwaltung ──
+// Der Klick auf „Dieses Aussehen wählen“ ist zugleich die Nutzeraktion, die der Browser für das
+// anschließende Ordner-Fenster verlangt.
+const LITE_ORDNER_HINWEIS = 'Danach öffnet sich ein Fenster: Dort einen LEEREN Ordner für das Lernpaket wählen oder neu anlegen – am besten mit dem Namen des Lernpakets. Darin speichert das Studio alle Seiten und Bilder.';
+function layoutWaehlen(titel, hinweis) {
+  return new Promise(fertig => {
+    const liste = [...LAYOUTS.values()];
+    modalZeigen(titel || 'Aussehen wählen', `${hinweis ? `<div class="msg">${esc(hinweis)}</div>` : ''}<div class="karten">${liste.map(l => `<div class="karte"><h3><span class="farbfeld" style="background:${esc((l.farben || {}).akzent || '#999')}"></span>${esc(l.name)}${KURS && LAYOUT && l.id === LAYOUT.id ? ' <span class="hint">(aktuell)</span>' : ''}</h3><p>${esc(l.beschreibung)}</p><div class="aktionen"><button type="button" class="sec klein" data-v="${esc(l.id)}">👁 Beispielseite</button><button type="button" class="klein" data-w="${esc(l.id)}">Dieses Aussehen wählen</button></div></div>`).join('')}</div><p class="hint">Das Aussehen lässt sich später unter „⚙ Titel, Begrüßung und Aussehen“ jederzeit ändern.</p>`);
+    let gewaehlt = null;
+    modalZu.beimSchliessen = () => fertig(gewaehlt);
+    $('modalRumpf').onclick = e => {
+      const v = e.target.closest('[data-v]'), w = e.target.closest('[data-w]');
+      if (v) layoutVorschau(LAYOUTS.get(v.dataset.v));
+      if (w) { gewaehlt = LAYOUTS.get(w.dataset.w); modalZu(); }
+    };
+  });
+}
+// Aussehen eines geöffneten Lernpakets wechseln (wie im großen Studio, aber zurück zur Lite-Ansicht)
+async function liteLayoutWechseln() {
+  const l = await layoutWaehlen('Anderes Aussehen wählen');
+  if (!l || l.id === LAYOUT.id) return;
+  const alle = KURS.module.flatMap(m => m.seiten);
+  if (!confirm(`Aussehen „${l.name}“ verwenden?\n\nAlle Seiten werden beim Speichern im neuen Aussehen neu erstellt. Texte, Bilder und Fragen bleiben erhalten.`)) return;
+  layoutAnwenden(l);
+  STRUKTUR_GEAENDERT = true;
+  alle.forEach(s => { if (s.bearbeitbar) s.geaendert = true; });
+  geaendert();
+  await speichern();
+  baumZeigen(); kursAnsicht();
+  status(`Aussehen „${l.name}“ übernommen und gespeichert.`, 'ok');
+}function neueSeite(datei, titel) {
+  return { datei, titel, einleitung: '', kopfbild: '', icon: '', modulTitel: '', layoutId: LAYOUT.id, bearbeitbar: true, roh: '', geaendert: true, neu: true,
+    schritte: [{ titel, inhalt: '<p>Hier den Text der Seite schreiben.</p>', medium: null }] };
+}
+const LITE_EINLEITUNG = 'Schau dir die Seiten der Reihe nach an. Dein Fortschritt wird automatisch gespeichert.';
+async function kursNeu() {
+  if (UNGESPEICHERT && !confirm('Es gibt ungespeicherte Änderungen. Trotzdem ein neues Lernpaket erstellen?')) return;
+  const titel = klein(prompt('Wie soll das Lernpaket heißen? (z. B. der Titel deines Vortrags)', 'Mein Lernpaket') || '');
+  if (!titel) return;
+  const lay = await layoutWaehlen('Aussehen für das Lernpaket wählen', window.showDirectoryPicker ? LITE_ORDNER_HINWEIS : ''); if (!lay) return;
+  const sp = await leererOrdner(titel); if (!sp) return;
+  const datei = 'Modul01_1_Titelseite.html';
+  SP = sp; PROJEKT = 'kurs'; UEBUNG = null; FRAGEN_DB = {}; PAPIERKORB.length = 0; layoutAnwenden(lay);
+  KURS = { titel, kategorie: 'VORTRAG', einleitung: LITE_EINLEITUNG, kursId: 'kurs-' + zufall(6), abschlussProzent: 100,
+    module: [{ id: kennung(datei), titel, seiten: [neueSeite(datei, titel)] }] };
+  await vscodeEinrichten(true);
+  await SP.schreiben('medien/bilder/.gitkeep', ''); await SP.schreiben('medien/videos/.gitkeep', '');
+  STRUKTUR_GEAENDERT = true;
+  await speichern();
+  await kursLaden(SP);
+  AUSWAHL = { art: 'seite', m: 0, s: 0 }; baumZeigen(); editorZeigen();
+  status(`Lernpaket „${titel}“ angelegt. Jetzt die erste Seite füllen.`, 'ok');
+}
+
+// ── Lite: PowerPoint übernehmen – jede Folie wird eine Seite ────────────────────
+// Lesen und Übernehmen (pptLesen, pptUebernehmen) wie im großen Studio; hier nur der vereinfachte Dialog:
+// keine Wahl der Aufteilung (immer eine Seite je Folie), Sprechernotizen nur „mit“ oder „ohne“.
+// Voreingestellt ist die Original-Anordnung (Folie sieht aus wie in PowerPoint, als frei bearbeitbare Folie).
+function pptDialog(zielModul, vonStart) {
+  const offen = PROJEKT === 'kurs' && !!KURS;
+  modalZeigen('PowerPoint übernehmen', `<p style="margin-top:0;">Übernimmt deine Präsentation: <b>Jede Folie wird eine Seite</b> – mit Folientitel, Text, Aufzählungen, Tabellen, Bildern und auf Wunsch den Sprechernotizen. Danach lässt sich alles bearbeiten.</p>
+    <div class="drop" id="pptDrop"><b>PowerPoint-Datei hierher ziehen</b> oder <label class="btn sec klein" style="display:inline-block;">Datei wählen<input type="file" id="pptDatei" accept=".pptx,.ppsx,.potx,.ppt,.pps" class="hidden"></label></div>
+    <div id="pptErg"></div>`, true);
+  let an = null;
+  const zeigen = async datei => {
+    if (/\.(ppt|pps|pot)$/i.test(datei.name)) {
+      $('pptErg').innerHTML = `<div class="msg warn"><b>Das ist das alte PowerPoint-Format (${esc(datei.name.split('.').pop())}).</b> So geht es trotzdem:<ol style="margin:6px 0 0;"><li>Die Datei in PowerPoint öffnen.</li><li><i>Datei → Speichern unter</i> → Dateityp <b>„PowerPoint-Präsentation (*.pptx)“</b> wählen und speichern.</li><li>Die neue .pptx-Datei hier übernehmen.</li></ol></div>`;
+      return;
+    }
+    $('pptErg').innerHTML = '<div class="msg">Lese die Präsentation …</div>';
+    try { an = await pptLesen(datei); } catch (e) { $('pptErg').innerHTML = `<div class="msg err">${esc(e.message)}</div>`; return; }
+    const h = an.hinweise, bilder = an.folien.reduce((a, f) => a + f.teile.filter(t => t.art === 'bild').length, 0);
+    const notizen = an.folien.filter(f => f.notizen.length).length;
+    const hinweise = [h.emf ? `${h.emf} Grafik(en) in einem Format, das Browser nicht anzeigen (EMF/WMF/TIFF), fehlen. Tipp: sie in PowerPoint als Bild (PNG) speichern und danach mit „🖼 Bild im Text“ einfügen.` : '',
+      h.diagramm ? `${h.diagramm} Diagramm(e) werden nicht übernommen – bitte als Bild einfügen.` : '',
+      h.extern ? `${h.extern} verknüpfte Datei(en) stecken nicht in der Präsentation und fehlen.` : '',
+      an.wiederkehrend ? `${an.wiederkehrend} wiederkehrende Elemente (Logos, Kennzeichnungen) werden weggelassen.` : ''].filter(Boolean);
+    $('pptErg').innerHTML = `<div class="msg ok"><b>${esc(an.name)}</b>: ${an.folien.length} Folien, ${bilder} Bilder${notizen ? `, ${notizen} Folien mit Sprechernotizen` : ''}.</div>
+      ${hinweise.length ? `<div class="msg warn"><ul style="margin:0;">${hinweise.map(x => `<li>${esc(x)}</li>`).join('')}</ul></div>` : ''}
+      <div class="kasten">
+        ${offen ? `<label>Wohin?</label>
+          <label class="wahl"><input type="radio" name="pptZiel" value="anhaengen"${vonStart ? '' : ' checked'}> <span>als weitere Seiten an das geöffnete Lernpaket <b>„${esc(KURS.titel)}“</b> anhängen</span></label>
+          <label class="wahl"><input type="radio" name="pptZiel" value="neu"${vonStart ? ' checked' : ''}> <span>als <b>neues Lernpaket</b></span></label>` : ''}
+        <div id="pptTitelZeile"><label for="pptKursTitel">Titel des neuen Lernpakets</label><input type="text" id="pptKursTitel" value="${esc(an.titel)}" spellcheck="true"></div>
+        <label style="margin-top:10px;">Wie sollen die Folien aussehen?</label>
+        <label class="wahl"><input type="radio" name="pptArt" value="original" checked> <span><b>Wie in PowerPoint</b> <span class="hint">– Lage, Farben, Formen und Hintergrund bleiben erhalten. Jede Folie lässt sich danach wie in PowerPoint frei bearbeiten (🎨 Freie Folie).</span></span></label>
+        <label class="wahl"><input type="radio" name="pptArt" value="inhalt"> <span><b>Nur den Inhalt</b> <span class="hint">– Text und Bilder im gewählten Aussehen des Lernpakets; am besten lesbar auf dem Handy.</span></span></label>
+        ${notizen ? `<label class="wahl" style="margin-top:10px;"><input type="checkbox" id="pptNotiz" checked> <span><b>Sprechernotizen mit übernehmen</b> <span class="hint">– als Text unter dem Folieninhalt. Gut, wenn die Notizen erklären, was im Vortrag gesagt wird.</span></span></label>` : ''}
+        ${h.versteckt ? `<label class="wahl"><input type="checkbox" id="pptVersteckt"> <span>auch die ${h.versteckt} ausgeblendete(n) Folie(n) übernehmen</span></label>` : ''}
+      </div>
+      <details class="kasten"><summary style="cursor:pointer;">Folien ansehen (${an.folien.length})</summary><ol style="margin:8px 0 0;">${an.folien.map(f => `<li${f.versteckt ? ' style="opacity:.5"' : ''}>${esc(f.titel || '(ohne Titel)')}${f.versteckt ? ' <span class="hint">· ausgeblendet</span>' : ''}</li>`).join('')}</ol></details>
+      <div class="ff-modal-knoepfe"><button type="button" class="sec" id="pptAbbruch">Abbrechen</button><button type="button" id="pptLos">Übernehmen</button></div>`;
+    const alsNeu = () => !offen || (document.querySelector('input[name="pptZiel"]:checked') || {}).value === 'neu';
+    const titelZeigen = () => $('pptTitelZeile').classList.toggle('hidden', !alsNeu());
+    document.querySelectorAll('input[name="pptZiel"]').forEach(r => r.onchange = titelZeigen);
+    titelZeigen();
+    $('pptAbbruch').onclick = modalZu;
+    $('pptLos').onclick = async () => {
+      const opt = { aufteilung: 'folie', notizen: $('pptNotiz') && $('pptNotiz').checked ? 'text' : 'weg', versteckte: $('pptVersteckt') ? $('pptVersteckt').checked : false, original: (document.querySelector('input[name="pptArt"]:checked') || {}).value === 'original' };
+      if (alsNeu()) { const titel = klein($('pptKursTitel').value) || an.titel; modalZu(); return liteAusPpt(an, opt, titel); }
+      const mi = zielModul != null && KURS.module[zielModul] ? zielModul : KURS.module.length - 1;
+      opt.ziel = mi >= 0 ? String(mi) : 'neu';
+      $('pptLos').disabled = true; $('pptLos').textContent = 'Übernehme …';
+      try {
+        const erg = await pptUebernehmen(an, opt);
+        modalZu();
+        AUSWAHL = { art: 'seite', m: erg.modul, s: erg.ersteSeite }; baumZeigen(); editorZeigen();
+        status(`PowerPoint übernommen: ${erg.seiten} neue Seite(n), ${erg.medien} Bild(er). Bitte durchsehen und speichern.` + (erg.meldungen.length ? ' · ' + erg.meldungen.join(' · ') : ''), 'ok');
+      } catch (e) { $('pptLos').disabled = false; $('pptLos').textContent = 'Übernehmen'; $('pptErg').insertAdjacentHTML('beforeend', `<div class="msg err">${esc(e.message)}</div>`); }
+    };
+  };
+  $('pptDatei').onchange = e => { const f = e.target.files[0]; if (f) zeigen(f); };
+  dropZone($('pptDrop'), dt => { const f = dt.files[0]; if (f) zeigen(f); });
+}
+// Neues Lernpaket aus einer Präsentation: Aussehen wählen, leeren Ordner wählen, Folien übernehmen
+async function liteAusPpt(an, opt, titel) {
+  if (UNGESPEICHERT && !confirm('Es gibt ungespeicherte Änderungen. Trotzdem ein neues Lernpaket erstellen?')) return;
+  const lay = await layoutWaehlen('Aussehen für das Lernpaket wählen', window.showDirectoryPicker ? LITE_ORDNER_HINWEIS : ''); if (!lay) return;
+  const sp = await leererOrdner(titel); if (!sp) return;
+  try {
+    SP = sp; PROJEKT = 'kurs'; UEBUNG = null; FRAGEN_DB = {}; PAPIERKORB.length = 0; layoutAnwenden(lay);
+    KURS = { titel, kategorie: 'VORTRAG', einleitung: LITE_EINLEITUNG, kursId: 'kurs-' + zufall(6), abschlussProzent: 100, module: [] };
+    const erg = await mitLadeanzeige('Die Präsentation wird übernommen …', () => pptUebernehmen(an, Object.assign({}, opt, { ziel: 'neu' })));
+    KURS.module[0].titel = titel;
+    await vscodeEinrichten(true);
+    STRUKTUR_GEAENDERT = true;
+    await speichern();
+    await kursLaden(SP);
+    AUSWAHL = { art: 'seite', m: 0, s: 0 }; baumZeigen(); editorZeigen();
+    status(`Lernpaket „${titel}“ aus PowerPoint: ${erg.seiten} Seite(n), ${erg.medien} Bild(er). Bitte die Seiten durchsehen.` + (erg.meldungen.length ? ' · ' + erg.meldungen.join(' · ') : ''), 'ok');
+  } catch (e) { status('Übernahme aus PowerPoint nicht möglich: ' + e.message, 'err'); }
+}
+
+// ── Lite: Seitenmenü links – nur Seiten, Abschlusstest, Fertigstellen ─────────────
+function baumZeigen() {
+  if (PROJEKT === 'uebung' && UEBUNG) return uebungBaum();
+  if (!KURS) return;
+  const oben = (art, text) => `<button type="button" class="baum-kurs${AUSWAHL.art === art ? ' aktiv' : ''}" data-wahl="${art}">${text}</button>`;
+  const mehrere = KURS.module.length > 1;
+  let h = '<div class="baum-titel">① Seiten</div>', nr = 0;
+  KURS.module.forEach((m, i) => {
+    if (mehrere) h += `<div class="lite-abschnitt" title="Abschnitt">${esc(m.titel)}</div>`;
+    m.seiten.forEach((s, k) => {
+      nr++;
+      const aktiv = AUSWAHL.art === 'seite' && AUSWAHL.m === i && AUSWAHL.s === k ? ' aktiv' : '';
+      h += `<div class="baum-seite"><button type="button" class="baum-eintrag${aktiv}" data-wahl="seite" data-m="${i}" data-s="${k}" title="${esc(s.titel)}"><span class="lite-nr">${nr}.</span>${s.bearbeitbar ? '' : '🔒 '}${esc(s.titel)}${s.geaendert ? ' <span class="punkt-geaendert">●</span>' : ''}</button>` +
+        `<button type="button" class="baum-mini" data-tun="seiteHoch" data-m="${i}" data-s="${k}" title="Seite nach oben">▲</button>` +
+        `<button type="button" class="baum-mini" data-tun="seiteRunter" data-m="${i}" data-s="${k}" title="Seite nach unten">▼</button></div>`;
+    });
+    h += `<div class="baum-seite"><button type="button" class="baum-mini" data-tun="seiteNeu" data-m="${i}">＋ Seite hinzufügen</button></div>
+      <div class="baum-seite"><button type="button" class="baum-mini" data-tun="folieNeu" data-m="${i}" title="Neue Seite, die du wie in PowerPoint frei gestaltest: Texte, Bilder und farbige Kästen beliebig anordnen">＋ 🎨 Freie Folie hinzufügen</button></div>`;
+  });
+  h += `<div class="baum-seite"><button type="button" class="baum-mini" data-tun="pptImport" title="Folien einer PowerPoint-Präsentation als weitere Seiten anhängen">📥 Folien aus PowerPoint hinzufügen</button></div>`;
+  const t = kursTest();
+  h += '<div class="baum-titel">② Abschlusstest (freiwillig)</div>' + oben('test', t.aktiv ? `🏁 ${esc(t.titel)} <span class="hint">(${t.fragen.length} Fragen)</span>` : '🏁 Abschlusstest <span class="hint">(aus)</span>');
+  h += '<div class="baum-titel">③ Fertigstellen</div>' + oben('kurs', `⚙ Titel, Begrüßung und Aussehen${UNGESPEICHERT ? ' <span class="punkt-geaendert">●</span>' : ''}`) + oben('paket', '📦 Für Moodle speichern');
+  $('baum').innerHTML = h;
+}
+
+// ── Lite: Ansichten, die es hier nicht gibt, führen zur passenden einfachen Ansicht ──
+editorZeigen = (original => function () {
+  if (AUSWAHL.art === 'modul' && KURS) {
+    const m = KURS.module[AUSWAHL.m];
+    AUSWAHL = m && m.seiten.length ? { art: 'seite', m: AUSWAHL.m, s: 0 } : { art: 'kurs' };
+    baumZeigen();
+  }
+  if (['abzeichen', 'layout', 'pruefung', 'medien', 'suchen', 'kommentare', 'druck', 'sicherungen'].includes(AUSWAHL.art) && KURS) AUSWAHL = { art: 'kurs' };
+  return original();
+})(editorZeigen);
+
+// ── Lite: Titel und Begrüßung (statt der vielen Lernpaket-Einstellungen) ─────────
+function kursAnsicht() {
+  const k = KURS;
+  $('editor').innerHTML = `<h1>Titel, Begrüßung und Aussehen</h1><p class="lead">Das sehen die Teilnehmenden zuerst, wenn sie das Lernpaket in Moodle öffnen.</p>${reparaturHtml()}
+    <div class="kasten">
+      <label for="kTitel">Titel des Lernpakets</label><input type="text" id="kTitel" value="${esc(k.titel)}" spellcheck="true">
+      <label for="kEin">Begrüßung <span class="hint">(kurzer Text oben in der Übersicht)</span></label><textarea id="kEin" rows="3" spellcheck="true">${esc(k.einleitung)}</textarea>
+      <label>Titelbild <span class="hint">(optional – groß oben in der Übersicht)</span></label>
+      <div class="bildwahl"><div class="vorschau" id="kBildVorschau"></div><div><button type="button" class="sec klein" id="kBildWahl">Bild wählen</button> <button type="button" class="sec klein" id="kBildWeg">entfernen</button></div></div>
+      <label style="margin-top:12px;">Aussehen (Layout)</label>
+      <div><span class="farbfeld" style="background:${esc((LAYOUT.farben || {}).akzent || '#999')}"></span><b>${esc(LAYOUT.name)}</b> &nbsp; <button type="button" class="sec klein" id="kLayout">🎨 Anderes Aussehen wählen</button></div>
+    </div>
+    <div class="lite-blaettern"><button type="button" class="sec" id="kZumTest">🏁 Zum Abschlusstest</button><button type="button" id="kZumPaket">📦 Weiter: für Moodle speichern →</button></div>`;
+  const kursBildZeigen = async () => { $('kBildVorschau').style.backgroundImage = k.kursBild ? `url('${await SP.url(k.kursBild)}')` : ''; };
+  kursBildZeigen();
+  $('kBildWahl').onclick = () => medienWahl('bilder', p => { k.kursBild = p; geaendert(); kursBildZeigen(); });
+  $('kBildWeg').onclick = () => { k.kursBild = ''; geaendert(); kursBildZeigen(); };
+  const setz = (id, f) => $(id).addEventListener('input', e => { f(e.target.value); STRUKTUR_GEAENDERT = true; geaendert(); });
+  setz('kTitel', v => { k.titel = v; $('kursName').textContent = v; });
+  setz('kEin', v => k.einleitung = v);
+  $('kLayout').onclick = () => liteLayoutWechseln();
+  $('kZumTest').onclick =() => { AUSWAHL = { art: 'test' }; baumZeigen(); editorZeigen(); };
+  $('kZumPaket').onclick = () => { AUSWAHL = { art: 'paket' }; baumZeigen(); editorZeigen(); };
+  reparaturVerbinden();
+}
+// Nach dem Öffnen gleich die erste Seite zeigen (außer der Ordner musste repariert werden – das steht unter ⚙)
+kursLaden = (original => async function (sp) {
+  const r = await original(sp);
+  if (KURS && AUSWAHL.art === 'kurs' && !REPARIERT.length) {
+    const m = KURS.module.findIndex(x => x.seiten.length);
+    if (m >= 0) { AUSWAHL = { art: 'seite', m, s: 0 }; baumZeigen(); editorZeigen(); }
+  }
+  return r;
+})(kursLaden);
+
+// ── Lite: Seite bearbeiten – Überschrift, Text, ein Bild ────────────────────────
+async function seitenAnsicht(i, k) {
+  const m = KURS.module[i], s = m && m.seiten[k];
+  if (!s) { AUSWAHL = { art: 'kurs' }; return editorZeigen(); }
+  const nr = KURS.module.slice(0, i).reduce((a, x) => a + x.seiten.length, 0) + k + 1;
+  const gesamt = KURS.module.reduce((a, x) => a + x.seiten.length, 0);
+  if (!s.bearbeitbar) {
+    $('editor').innerHTML = `<h1>${esc(s.titel)}</h1><div class="msg warn">Diese Seite wurde mit einem anderen Programm erstellt und kann hier nicht bearbeitet werden. Verschieben und Löschen geht trotzdem.</div><button type="button" class="gefahr" id="sLoeschen">Seite löschen</button>`;
+    $('sLoeschen').onclick = () => seiteLoeschen(i, k);
+    return;
+  }
+  const einSchritt = s.schritte.length === 1;
+  // Eine Seite = ein Schritt: dessen Überschrift ist die Seitenüberschrift (sonst stünde „Erster Schritt“ im Lernpaket)
+  if (einSchritt && s.schritte[0].titel !== s.titel && /^(Erster|Neuer) Schritt$/.test(s.schritte[0].titel)) { s.schritte[0].titel = s.titel; geaendert(s); }
+  const weiterText = k < m.seiten.length - 1 || i < KURS.module.length - 1 ? 'Nächste Seite →' : '＋ Weitere Seite anlegen';
+  // Seite mit freier Folie: kein „Bild zur Seite“ daneben (das Bild gehört auf die Folie)
+  const istFolie = einSchritt && /data-lm-ia="folie"/.test(schrittHtml(s.schritte[0], s));
+  $('editor').innerHTML = `<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+      <h1 style="flex:1;">Seite ${nr} von ${gesamt}</h1>
+      <button type="button" class="sec" id="sVorschau">👁 Vorschau</button>
+      <button type="button" class="gefahr" id="sLoeschen">Seite löschen</button></div>
+    <div class="kasten"><label for="sTitel">Überschrift der Seite</label><input type="text" id="sTitel" value="${esc(s.titel)}" spellcheck="true"></div>
+    <h2>Inhalt <span class="hint">${istFolie ? '(„✎ Folie bearbeiten“ öffnet die Folie wie in PowerPoint · Text unter der Folie = Erläuterung, freiwillig)' : '(Text schreiben oder hineinkopieren · links auf Wunsch ein Bild)'}</span></h2>
+    <div id="schritte" class="${einSchritt ? 'lite-ein-schritt' : ''}${istFolie ? ' lite-folie' : ''}"></div>
+    <div class="lite-blaettern">${nr > 1 ? '<button type="button" class="sec" id="sZurueck">← Vorherige Seite</button>' : ''}<button type="button" id="sWeiter">${weiterText}</button></div>`;
+  $('sTitel').addEventListener('input', e => {
+    s.titel = e.target.value;
+    if (einSchritt) s.schritte[0].titel = e.target.value;
+    geaendert(s);
+  });
+  $('sLoeschen').onclick = () => seiteLoeschen(i, k);
+  $('sVorschau').onclick = () => seitenVorschau(i, k);
+  // Blättern: Die nächste Seite beginnt oben (die Knöpfe „Vorherige/Nächste Seite“ stehen ja ganz unten)
+  const gehe = (mi, si) => { AUSWAHL = { art: 'seite', m: mi, s: si }; baumZeigen(); editorZeigen(); $('editor').scrollTop = 0; };
+  if ($('sZurueck')) $('sZurueck').onclick = () => k > 0 ? gehe(i, k - 1) : gehe(i - 1, KURS.module[i - 1].seiten.length - 1);
+  $('sWeiter').onclick = () => {
+    if (k < m.seiten.length - 1) return gehe(i, k + 1);
+    const n = KURS.module.findIndex((x, j) => j > i && x.seiten.length);
+    if (n >= 0) return gehe(n, 0);
+    const b = $('baum').querySelector(`[data-tun="seiteNeu"][data-m="${i}"]`); if (b) b.click();
+  };
+  await schritteZeigen(s, i, k);
+  document.querySelectorAll('#schritte .medium-flaeche').forEach(f => { if (!f.querySelector('img,video')) f.innerHTML = '＋ Bild zur Seite<br>(optional)'; });
+  document.querySelectorAll('#schritte [data-a="ohne"]').forEach(b => { b.textContent = 'kein Bild'; });
+}
+function seiteLoeschen(i, k) {
+  const m = KURS.module[i], s = m.seiten[k];
+  if (!confirm(`Seite „${s.titel}“ löschen?`)) return;
+  if (!s.neu) PAPIERKORB.push(s);
+  m.seiten.splice(k, 1);
+  STRUKTUR_GEAENDERT = true;
+  AUSWAHL = m.seiten.length ? { art: 'seite', m: i, s: Math.max(0, k - 1) } : { art: 'kurs' };
+  geaendert(); baumZeigen(); editorZeigen();
+}
+
+// ── Lite: Werkzeugleiste im Text – nur das Nötigste ──────────────────────────────
+function werkzeugleiste() {
+  const b = (cmd, inhalt, titel) => `<button type="button" data-cmd="${cmd}" title="${titel}">${inhalt}</button>`;
+  return `<div class="werkzeuge">${b('bold', '<b>F</b>', 'Fett (Strg+B)')}${b('italic', '<i>K</i>', 'Kursiv (Strg+I)')}<span class="trenner"></span>` +
+    `${b('h3', 'Zwischenüberschrift', 'Zwischenüberschrift')}${b('p', 'Normaler Text', 'Normaler Text')}<span class="trenner"></span>` +
+    `${b('ul', '• Liste', 'Aufzählung')}${b('ol', '1. Liste', 'Nummerierte Liste')}<span class="trenner"></span>` +
+    `${b('merke', '❗ Merke', 'Hervorgehobener Merksatz')}${b('emoji', '😊 Emoji', 'Emoji einfügen – nach Gruppen sortiert wie am Handy')}${b('bild', '🖼 Bild im Text', 'Bild mitten in den Text einfügen')}${b('folie', '🎨 Freie Folie', 'Freie Folie einfügen: Texte, Bilder und farbige Kästen frei anordnen – wie in PowerPoint')}<span class="trenner"></span>` +
+    `${b('undo', '↶', 'Rückgängig (Strg+Z)')}${b('redo', '↷', 'Wiederholen (Strg+Y)')}</div>`;
+}
+
+// ── Lite: einfacher Abschlusstest ────────────────────────────────────────────────
+// Weggelassen gegenüber dem großen Studio: Zufallsauswahl, Versuche, Zeitlimit, Art der Rückmeldung,
+// Wiederholungsmodul, Import/Export. Es gelten die Vorgaben (alle Fragen, beliebig viele Versuche,
+// kein Zeitlimit, Rückmeldung am Ende).
+function testAnsicht() {
+  const t = kursTest(), alle = t.fragen.map(id => FRAGEN_DB[id]).filter(Boolean), fertig = testFragen(true).length;
+  $('editor').innerHTML = `<h1>🏁 Abschlusstest</h1>
+    <p class="lead">Freiwillig: ein paar Fragen am Ende des Lernpakets. Das Ergebnis geht als Bewertung an Moodle.</p>
+    <div class="kasten">
+      <label class="wahl"><input type="checkbox" id="tAktiv"${t.aktiv ? ' checked' : ''}> <span><b>Abschlusstest verwenden</b></span></label>
+      <div id="tFelder"${t.aktiv ? '' : ' class="hidden"'}>
+        <div class="zeile"><div><label for="tTitel">Titel</label><input type="text" id="tTitel" value="${esc(t.titel)}" spellcheck="true"></div>
+        <div><label for="tBestehen">Bestanden ab … % richtig</label><input type="number" id="tBestehen" min="1" max="100" value="${t.bestehen}"></div></div>
+        <div class="msg" id="tZusammen" style="margin-top:10px;"></div>
+      </div>
+    </div>
+    <div id="tFragenTeil"${t.aktiv ? '' : ' class="hidden"'}>
+    <h2>Fragen <span class="hint">(${alle.length}${alle.length - fertig ? `, davon <b style="color:#d9a441">${alle.length - fertig} unvollständig</b> – kommen nicht ins Lernpaket` : ''})</span></h2>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
+      <button type="button" id="tNeu">＋ Neue Frage</button>
+      <button type="button" class="sec" id="tProbe"${fertig ? '' : ' disabled title="Erst Fragen anlegen"'}>👁 Test ausprobieren</button>
+    </div>
+    <div class="kasten" id="tListe">${alle.length ? alle.map((q, i) => {
+      const ty = FRAGE_TYPEN[q.typ] || {}, f = frageFehler(q);
+      return `<div class="ff-eintrag" style="padding:4px 0;border-bottom:1px solid var(--linie);"><span class="ff-nr">${i + 1}</span><span title="${esc(ty.name || '')}" style="width:22px;text-align:center;">${ty.icon || '?'}</span>
+        <span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${esc(frageKurztext(q))}">${esc(frageKurztext(q)) || '<i>(noch ohne Text)</i>'}${f.length ? ` <span style="color:#d9a441" title="${esc(f.join(' · '))}">⚠ unvollständig</span>` : ''}</span>
+        <button type="button" class="sec klein" data-t-tun="bearbeiten" data-id="${esc(q.id)}">✎ Bearbeiten</button><button type="button" class="sec klein" data-t-tun="weg" data-id="${esc(q.id)}" title="Frage löschen">🗑</button></div>`;
+    }).join('') : '<p class="hint" style="margin:0;">Noch keine Fragen. Mit <b>＋ Neue Frage</b> geht es los: Frage eintippen, Antworten eintragen, die richtige ankreuzen.</p>'}</div>
+    </div>
+    <div class="lite-blaettern"><button type="button" id="tZumPaket">📦 Weiter: für Moodle speichern →</button></div>`;
+  const zusammen = () => {
+    const n = testFragen(true).length, ok = Math.ceil(n * t.bestehen / 100);
+    $('tZusammen').innerHTML = n ? `<b>So erleben es die Teilnehmenden:</b> ${n} Frage${n === 1 ? '' : 'n'} in zufälliger Reihenfolge · bestanden ab ${t.bestehen} % (mindestens ${ok} richtig) · Ergebnis am Ende · beliebig viele Versuche.` : 'Noch keine vollständigen Fragen – bitte unten Fragen anlegen.';
+    $('tZusammen').className = 'msg ' + (n ? 'ok' : 'warn');
+  };
+  zusammen();
+  const neu = () => { STRUKTUR_GEAENDERT = true; geaendert(); };
+  const nachAenderung = () => { neu(); testAnsicht(); baumZeigen(); };
+  $('tAktiv').onchange = e => { t.aktiv = e.target.checked; nachAenderung(); };
+  $('tTitel').oninput = e => { t.titel = e.target.value; neu(); };
+  $('tBestehen').oninput = e => { const v = parseInt(e.target.value, 10); t.bestehen = isNaN(v) ? 80 : Math.max(1, Math.min(100, v)); neu(); zusammen(); };
+  $('tNeu').onclick = () => frageImFenster(neueFrage('single', neueFragenId()), q => { FRAGEN_DB[q.id] = q; t.fragen.push(q.id); nachAenderung(); }, 'test');
+  $('tListe').onclick = e => {
+    const b = e.target.closest('[data-t-tun]'); if (!b) return;
+    const id = b.dataset.id, q = FRAGEN_DB[id], i = t.fragen.indexOf(id);
+    if (b.dataset.tTun === 'bearbeiten' && q) frageImFenster(q, q2 => { FRAGEN_DB[id] = q2; nachAenderung(); }, 'test');
+    if (b.dataset.tTun === 'weg' && confirm('Diese Frage löschen?')) { t.fragen.splice(i, 1); delete FRAGEN_DB[id]; nachAenderung(); }
+  };
+  $('tProbe').onclick = async () => {
+    const w = window.open('', '_blank');
+    if (!w) return alert('Bitte Pop-ups für diese Seite erlauben.');
+    const { pakete } = await paketeErstellen('vorschau', false, false, { direktZumTest: true });
+    fensterSchreiben(w, pakete[0].index);
+  };
+  $('tZumPaket').onclick = () => { AUSWAHL = { art: 'paket' }; baumZeigen(); editorZeigen(); };
+}
+
+// ── Lite: Für Moodle speichern – immer EIN Paket, ohne Auswahl ───────────────────
+function paketAnsicht() {
+  const seiten = KURS.module.reduce((a, m) => a + m.seiten.length, 0);
+  $('editor').innerHTML = `<h1>📦 Für Moodle speichern</h1>
+    <p class="lead">Aus deinen Seiten wird eine ZIP-Datei für Moodle – mit allen Bildern und Fragen, auch offline nutzbar.</p>
+    <div id="paketStand"><div class="msg">Prüfe Seiten und Bilder …</div></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <button type="button" class="sec" id="btnKursVorschau"${seiten ? '' : ' disabled'}>👁 Erst ansehen, wie es aussieht</button>
+      <button type="button" id="btnPaket"${seiten ? '' : ' disabled'}>📦 ZIP-Datei für Moodle speichern</button>
+    </div>
+    <h2>Danach in Moodle</h2>
+    <ol><li>Im Moodle-Kurs <i>Bearbeiten einschalten</i> → <i>Aktivität anlegen</i> → <b>Lernpaket (SCORM)</b>.</li>
+      <li>Die eben gespeicherte ZIP-Datei hochladen und speichern – fertig.</li>
+      <li><b>Später etwas geändert?</b> Hier erneut speichern und die neue ZIP-Datei in derselben SCORM-Aktivität unter <i>Einstellungen → Paketdatei</i> hochladen. Der Fortschritt der Teilnehmenden bleibt erhalten.</li></ol>`;
+  if (!seiten) { $('paketStand').innerHTML = '<div class="msg err">Das Lernpaket hat noch keine Seiten. Bitte links unter „① Seiten“ mindestens eine Seite anlegen.</div>'; return; }
+  const pruefen = async () => {
+    try {
+      const { pakete, fehlt, fragenZahl, testFragenZahl } = await paketeErstellen('paket', false, true);
+      const p = pakete[0], tt = kursTest();
+      const testInfo = tt.aktiv ? (testFragenZahl ? `<div class="msg ok">🏁 Abschlusstest „${esc(tt.titel)}“: ${testFragenZahl} Frage(n), bestanden ab ${tt.bestehen} %.</div>` : `<div class="msg err">Der Abschlusstest ist eingeschaltet, hat aber noch keine vollständigen Fragen – er fehlt im Lernpaket.</div>`) : '';
+      $('paketStand').innerHTML = (UNGESPEICHERT ? `<div class="msg warn">Es gibt ungespeicherte Änderungen. Sie werden beim Erstellen automatisch gespeichert.</div>` : '') +
+        `<div class="msg ok">Bereit: <b>${seiten} Seite${seiten === 1 ? '' : 'n'}</b>${fragenZahl ? `, ${fragenZahl} Frage(n)` : ''} · Größe ca. <b>${mb(p.groesse)}</b>.</div>` + testInfo +
+        (p.groesse > MOODLE_GRENZE_MB * 1048576 ? `<div class="msg err"><b>Zu groß für Moodle</b> (über ${mb(MOODLE_GRENZE_MB * 1048576)}). Bitte weniger oder kleinere Bilder verwenden.</div>`
+          : p.groesse > APP_HINWEIS_MB * 1048576 ? `<div class="msg">Hinweis: Das Paket ist groß. Für die Moodle-App wird es komplett heruntergeladen – dafür WLAN einplanen.</div>` : '') +
+        (fehlt.size ? `<div class="msg warn"><b>${fehlt.size} Bild(er) fehlen</b> (sie bleiben im Lernpaket leer):<ul>${[...fehlt].slice(0, 15).map(([pf, d]) => `<li><code>${esc(pf)}</code> <span class="hint">in ${esc(d)}</span></li>`).join('')}${fehlt.size > 15 ? '<li>…</li>' : ''}</ul></div>` : '');
+    } catch (e) { $('paketStand').innerHTML = `<div class="msg err">${esc(e.message)}</div>`; }
+  };
+  $('btnKursVorschau').onclick = async () => {
+    const w = window.open('', '_blank');
+    if (!w) return alert('Bitte Pop-ups für diese Seite erlauben.');
+    const { pakete } = await paketeErstellen('vorschau', false);
+    fensterSchreiben(w, pakete[0].index);
+  };
+  $('btnPaket').onclick = async () => {
+    try {
+      const ziel = await zielWaehlen(KURS.titel.replace(/[^\wäöüÄÖÜß-]+/g, '_') + '_SCORM.zip');
+      if (ziel === 'abbruch') return;
+      await mitLadeanzeige('ZIP-Datei für Moodle wird erstellt …', async () => {
+        const { pakete } = await paketeErstellen('paket', false);
+        return paketSchreiben(pakete[0], ziel);
+      });
+    } catch (e) { status('Lernpaket konnte nicht erstellt werden: ' + e.message, 'err'); }
+  };
+  pruefen();
+}
+
+document.title = VARIANTE.liteName + ' ' + STUDIO_VERSION;
+AUSWAHL = { art: 'start' };
+startZeigen();
+</script>

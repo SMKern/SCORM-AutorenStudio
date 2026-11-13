@@ -1,0 +1,94 @@
+﻿SCORM-AutorenStudio 3.48.0 – Lizenzhinweise
+====================================================================
+
+
+1. URHEBER UND LIZENZ
+---------------------
+  SCORM-AutorenStudio und SCORM-AutorenStudio Lite
+  Copyright (c) 2026 Sven-Michael Kern
+
+  Lizenziert unter der EUPL, Version 1.2 oder neuer
+  (Open-Source-Lizenz für die Europäische Union).
+  SPDX-License-Identifier: EUPL-1.2
+
+  Der vollständige Lizenztext liegt bei: LIZENZ.txt (amtliche deutsche
+  Fassung, unverändert von der Europäischen Kommission übernommen:
+  https://interoperable-europe.ec.europa.eu/collection/eupl/eupl-text-eupl-12).
+  Im Programm steht er unter „? Hilfe → Lizenz“.
+  Die Datei LICENSE enthält dieselbe Lizenz in der amtlichen englischen
+  Fassung, ebenfalls unverändert. Alle von der Europäischen Kommission
+  anerkannten Sprachfassungen sind gleichwertig (Artikel 13 der Lizenz).
+
+  Das Wichtigste in einfachen Worten (maßgeblich ist allein der Lizenztext):
+    • Du darfst das Programm kostenlos nutzen – privat, im Unterricht,
+      im Betrieb, in Behörden.
+    • Du darfst es kopieren und weitergeben.
+    • Du darfst es verändern.
+    • Wer es weitergibt, legt Lizenz, diese Hinweise und den Quelltext bei.
+    • Wer eine veränderte Fassung weitergibt, tut das unter derselben
+      Lizenz und kennzeichnet, dass und wann geändert wurde. So bleibt das
+      Programm für alle frei („Copyleft“).
+    • Es gibt keine Gewährleistung und – außer bei Vorsatz und bei
+      Personenschäden – keine Haftung (Artikel 7 und 8 der Lizenz).
+
+
+2. ZUSÄTZLICHE ERLAUBNIS FÜR LERNPAKETE
+---------------------------------------
+  Lernpakete, die das Programm erzeugt, enthalten Teile des Programms:
+  den Kurs-Player, den Leitner-Test, die Fragen-Engine und die
+  Seitenvorlagen des gewählten Layouts. Damit daraus keine
+  Lizenzpflichten für deine Kurse entstehen, erteilt der Urheber
+  zusätzlich zur EUPL folgende Erlaubnis:
+
+    Alles, was mit dem Programm – unverändert oder verändert – als
+    Ergebnis erzeugt wird (Lernpakete, Übungspakete, Kursseiten,
+    Druckansichten und Vorschauen), darf einschließlich der darin
+    enthaltenen Programmteile ohne die Pflichten aus Artikel 5 der EUPL
+    genutzt, vervielfältigt, verbreitet und öffentlich zugänglich gemacht
+    werden – auch gewerblich und unter Bedingungen eigener Wahl.
+    Die Inhalte gehören denen, die sie erstellt haben.
+
+    Diese Erlaubnis gilt für die Programmteile nur als Bestandteil eines
+    solchen Ergebnisses. Wer sie daraus herauslöst, um sie für sich oder
+    als Teil eines anderen Programms weiterzugeben, tut das nach den
+    Bedingungen der EUPL.
+
+
+3. ENTHALTENE FREMDE SOFTWARE
+-----------------------------
+  PDF.js (liest PDF-Dateien für „PDF übernehmen“)
+    Copyright Mozilla Foundation
+    Lizenz: Apache License, Version 2.0
+    Version: 6.5.438 („legacy“-Fassung aus dem npm-Paket pdfjs-dist)
+    Dateien: Quellen\bausteine\pdf-engine\pdf.min.mjs und pdf.worker.min.mjs
+             (unverändert; außerdem in beide Programmdateien eingebettet)
+    Lizenztext: Quellen\bausteine\pdf-engine\LIZENZ-Apache-2.0.txt
+    Herkunft: https://github.com/mozilla/pdf.js
+
+  Weitere fremde Software, Schriften oder Bilder sind nicht enthalten.
+  Die Symbole (Icons) wurden für dieses Programm gezeichnet.
+  Emojis zeigt der Browser mit der Schrift des jeweiligen Rechners an.
+
+
+4. TRANSPARENZHINWEIS: KÜNSTLICHE INTELLIGENZ
+---------------------------------------------
+  Dieses Programm wurde von Sven-Michael Kern mit Unterstützung
+  künstlicher Intelligenz (Claude, Anthropic) entwickelt: Der Programmtext
+  und die Anleitungen sind zu wesentlichen Teilen mit einem KI-Assistenten
+  entstanden – nach den Vorgaben, unter der Anleitung und mit der Prüfung
+  des Urhebers. Derselbe Hinweis steht im Programm (unten rechts und im
+  Fenster „Über“), am Anfang jeder Programmdatei und in LIESMICH.txt.
+
+  Das Programm selbst enthält keine künstliche Intelligenz und nutzt
+  keine KI-Dienste.
+
+
+5. QUELLTEXT
+------------
+  Der Quelltext liegt vollständig bei:
+    • SCORM-AutorenStudio.html ist zugleich Programm und lesbarer Quelltext.
+    • Die darin eingebetteten Bausteine (Layouts, Kurs-Player,
+      Leitner-Test, Fragen-Engine, Anleitungen) liegen lesbar im Ordner
+      Quellen\ – samt dem Werkzeug, das sie einsetzt
+      (Quellen\werkzeuge\bauen.ps1) und einer Beschreibung
+      (Quellen\LIESMICH.txt).

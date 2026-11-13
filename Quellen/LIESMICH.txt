@@ -1,0 +1,78 @@
+﻿SCORM-AutorenStudio 3.48.0 – die Quellen
+====================================================================
+
+Dieser Ordner ist nur für Leute, die das Programm verändern oder
+nachvollziehen wollen. Zum Benutzen braucht man ihn nicht.
+
+Copyright (c) 2026 Sven-Michael Kern · Lizenziert unter der EUPL,
+Version 1.2 oder neuer (siehe ..\LIZENZ.txt und ..\LIZENZ-HINWEISE.txt)
+
+
+WIE IST DAS PROGRAMM AUFGEBAUT?
+-------------------------------
+  ..\SCORM-AutorenStudio.html
+      Das Programm – und zugleich sein lesbarer Quelltext (HTML, CSS und
+      JavaScript in einer Datei, durchgehend erklärt). Ganz unten stehen
+      eingebettete Bausteine in Base64-Schreibweise. Ihre lesbare Form
+      liegt hier:
+
+  bausteine\fragen-engine.js      stellt Fragen und Bausteine dar und wertet sie aus
+                                  (steckt im Studio, im Kurs-Player und im Leitner-Test)
+  bausteine\pdf-engine\           PDF.js von Mozilla (fremde Software, Apache-Lizenz 2.0)
+  Kurs_SCORM\Vorlage_Kurs.html    der Kurs-Player: Rahmen jedes Kurs-Lernpakets
+  Leitner_SCORM\Vorlage.html      der Leitner-Test: Rahmen jedes Übungs-Lernpakets
+  Layouts\*.layout.html           die eingebauten Layouts
+  Layouts\*.layout-vorlage.html   die Grundlage, aus der der Layout-Assistent neue Layouts erzeugt
+  Layouts\LAYOUT-FORMAT.md        Regeln für eigene Layout-Dateien
+  Dokumente\*.md                  die Anleitungen (erscheinen im Programm unter „? Hilfe“)
+  Lite\Lite-Zusatz.html           die vereinfachte Oberfläche der Lite-Ausgabe
+  Marke\*.svg                     die Symbole für den Browser-Tab
+  werkzeuge\bauen.ps1             setzt alles zusammen (siehe unten)
+  PRUEFSUMMEN.txt                 SHA-256-Prüfsummen aller Dateien
+
+
+ETWAS ÄNDERN
+------------
+  Am Programm selbst (Oberfläche, Editor, Import, Lernpaket-Erstellung):
+      direkt in ..\SCORM-AutorenStudio.html. Danach bauen.ps1 ausführen,
+      damit auch die Lite-Ausgabe den Stand bekommt.
+
+  An einem Baustein (Layout, Kurs-Player, Leitner-Test, Fragen-Engine,
+  Anleitung, Lite-Oberfläche):
+      die Datei hier im Ordner Quellen ändern, dann bauen.ps1 ausführen.
+
+  ..\SCORM-AutorenStudio-Lite.html nie von Hand ändern – die Datei wird
+  bei jedem Bauen neu erzeugt (Programm + Lite\Lite-Zusatz.html).
+
+
+ZUSAMMENBAUEN
+-------------
+  werkzeuge\bauen.ps1 mit der rechten Maustaste anklicken →
+  „Mit PowerShell ausführen“. (Windows; es wird nichts installiert und
+  nichts aus dem Internet geladen.)
+
+  Das Skript
+    1. kopiert die Fragen-Engine in Kurs-Player und Leitner-Test,
+    2. bettet Layouts, Layout-Grundlage, Anleitungen, PDF-Engine,
+       Kurs-Player, Leitner-Test und das Symbol in
+       SCORM-AutorenStudio.html ein,
+    3. erzeugt SCORM-AutorenStudio-Lite.html,
+    4. schreibt PRUEFSUMMEN.txt neu.
+
+  Bei einer eigenen, veränderten Fassung bitte die Versionsnummer anpassen
+  (STUDIO_VERSION in SCORM-AutorenStudio.html), die Änderung in der Liste
+  VERSIONEN eintragen und deutlich machen, dass es eine veränderte Fassung
+  ist – das verlangt auch die Lizenz (Artikel 5).
+
+
+TESTEN
+------
+  Das Programm läuft per Doppelklick in Chrome oder Edge. Über
+  „window.KS“ stellt es seine wichtigsten Funktionen für automatische
+  Tests bereit (siehe Ende von SCORM-AutorenStudio.html).
+
+
+HINWEIS ZUR ENTSTEHUNG
+----------------------
+  Dieses Programm wurde von Sven-Michael Kern mit Unterstützung
+  künstlicher Intelligenz (Claude, Anthropic) entwickelt.

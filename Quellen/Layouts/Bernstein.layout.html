@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<!--
+╔══════════════════════════════════════════════════════════════════════════════╗
+║  LAYOUT-DATEI für das SCORM-AutorenStudio                                    ║
+║  Layout: „Bernstein“ · Hauptfarbe #B45309 (sRGB 180|83|9)
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+  Erzeugt mit dem Layout-Assistenten des SCORM-AutorenStudios aus der gemeinsamen
+  Grundlage (gleicher Aufbau für alle Standard-Layouts, nur die Farben
+  unterscheiden sich). Bitte nicht von Hand umfärben, sondern im SCORM-AutorenStudio
+  unter 🎨 Layouts → „Neues Layout erstellen“ neu erzeugen.
+
+  Farben dieses Layouts (automatisch aus Hauptfarbe und Schmuckfarben berechnet,
+  mit Kontrastprüfung):
+    #b45309  Hauptfarbe für Flächen (Häkchen, Merke-Rand, Weiter-Knopf, Seitenpunkte)
+    #b45309  Hauptfarbe für Schrift auf Weiß (Überschriften, Links)
+    #b45309  aktive Knöpfe auf dunklem Grund
+    #e0670b  Akzentschrift auf dunklem Grund
+    #873e07  dunkle Variante (Verläufe)
+    #e5690b  helle Variante (Icon-Kachel)
+    #231b15  dunkler Grund (Kopf, Seite)
+    #463c34  Fließtext
+  Schmuckfarben (für alle Layouts gleich, Raster 100 % / 56 % / 13 %):
+    Schmuckfarbe 1  sRGB 198|214|222   Schmuckfarbe 2  sRGB 166|184|195
+    Schmuckfarbe 3  sRGB 100|123|138
+
+  Aufbau dieser Datei:
+    1) layout-info   Name, Kennung, Farben und die Stile für Texte (JSON)
+    2) Vorlagen      <script type="text/x-vorlage" data-name="…">
+                     „seite“ ist die ganze Seite, die anderen sind Bausteine,
+                     die mit {{> name}} eingesetzt werden.
+    3) player-css    Farben des Lernpaket-Rahmens (Übersicht, Leiste)
+       leitner-css   Farben der Übungen (Leitner-Test)
+  Regeln für Layout-Dateien: Quellen\Layouts\LAYOUT-FORMAT.md
+-->
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>Layout: Bernstein</title>
+<style>
+  body { font-family: Arial, sans-serif; max-width: 760px; margin: 40px auto; padding: 0 16px; color: #231b15; line-height: 1.5; }
+  h1 { color: #b45309; }
+</style>
+</head>
+<body>
+<h1>Layout „Bernstein“</h1>
+<p>Dies ist eine <b>Layout-Datei für das SCORM-AutorenStudio</b>. Sie wird im SCORM-AutorenStudio unter <b>🎨 Layouts</b> geladen.
+Eine Beispielseite zeigt das SCORM-AutorenStudio mit <b>👁 Beispielseite</b>.</p>
+
+<!-- ═══ 1) LAYOUT-INFO ═══════════════════════════════════════════════════════ -->
+<script type="application/json" id="layout-info">
+{
+  "format": "kurs-layout-1",
+  "id": "bernstein",
+  "name": "Bernstein",
+  "version": "1.0",
+  "beschreibung": "Aufbau wie alle Standard-Layouts (Kopfzeile mit Modul-Menü, großes Kopfbild, runde Schritt-Knöpfe links, Bild links neben dem Text). Hauptfarbe #B45309 (sRGB 180|83|9), Schmuckfarben für Flächen und Linien.",
+  "grundlage": { "name": "standard", "hauptfarbe": "#B45309 (sRGB 180|83|9)" },
+  "farben": { "akzent": "#b45309", "hell": "#f3f6f7", "text": "#463c34", "linie": "#dfe8ed" },
+  "stile": {
+    "ueberschrift": "font-family:Arial,sans-serif !important;font-size:17px;line-height:1.3;font-weight:700;color:#b45309;margin:6px 0 10px;",
+    "infokasten": "border:1px solid #dfe8ed;border-radius:14px;background:#ffffff;padding:14px 16px;margin:14px 0;box-shadow:0 2px 8px rgba(35,27,21,.05);",
+    "merke": "border-left:5px solid #b45309;background:#f3f6f7;border-radius:12px;padding:12px 16px;margin:14px 0;",
+    "warnung": "border-left:5px solid #c62828;background:#fdecea;border-radius:12px;padding:12px 16px;margin:14px 0;color:#5f1612;",
+    "aufklapp": "border:1px solid #dfe8ed;border-radius:12px;background:#f8fafb;padding:10px 14px;margin:14px 0;",
+    "aufklappTitel": "cursor:pointer;font-weight:700;color:#b45309;",
+    "trenner": "border:0;border-top:1px solid #dfe8ed;margin:20px 0;",
+    "datei": "display:inline-block;padding:8px 14px;border:1px solid #cdd7dd;border-radius:10px;background:#f3f6f7;font-weight:700;text-decoration:none;color:#b45309;margin:4px 0;",
+    "audio": "display:block;width:100%;max-width:520px;margin:10px 0;",
+    "bild": "display:block;width:100%;max-width:560px;aspect-ratio:4/3;height:auto;object-fit:contain;background:#f3f6f7;border-radius:10px;margin:10px 0;",
+    "video": "display:block;width:100%;max-width:760px;height:auto;border-radius:10px;background:#000;margin:10px 0;",
+    "iframe": "display:block;width:100%;max-width:760px;aspect-ratio:16/9;border:0;border-radius:10px;margin:10px 0;",
+    "ul": "list-style:none;padding:0;margin:8px 0 12px;display:flex;flex-direction:column;gap:7px;",
+    "li": "display:flex;align-items:flex-start;gap:12px;line-height:1.45;",
+    "listenpunkt": "<span aria-hidden=\"true\" style=\"display:inline-flex;align-items:center;justify-content:center;background:#b45309;color:white;border-radius:50%;font-size:12px;font-weight:bold;flex:0 0 19px;height:19px;margin-top:1px;\">✓</span><span data-lm-li style=\"flex:1;min-width:0;\">{{{inhalt}}}</span>",
+    "ol": "margin:8px 0 12px;padding-left:22px;line-height:1.45;",
+    "tabelle": "border-collapse:collapse;width:100%;margin:10px 0;font-size:14px;",
+    "zelle": "border:1px solid #dfe8ed;padding:7px 9px;text-align:left;vertical-align:top;",
+    "kopfzelle": "border:1px solid #dfe8ed;padding:7px 9px;text-align:left;vertical-align:top;background:#f3f6f7;font-weight:700;",
+    "link": "color:#b45309;font-weight:700;",
+    "mediumBild": "display:block;width:100%;aspect-ratio:4/3;height:auto;object-fit:contain;background:#f3f6f7;border:0;",
+    "mediumVideo": "display:block;width:100%;height:auto;border-radius:10px;background:#000;margin:0;"
+  }
+}
+</script>
+
+<!-- ═══ 2) VORLAGEN ══════════════════════════════════════════════════════════ -->
+
+<!-- Die ganze Seite -->
+<script type="text/x-vorlage" data-name="seite">
+<!--
+================================================================================
+  {{modulNr}}.{{teilNr}}  {{titel}}
+  Kurs: {{kursTitel}} · Modul {{modulNr}} │ {{modulTitel}}
+  Datei: {{datei}}
+================================================================================
+  Seite im Layout „Bernstein“, erstellt mit dem SCORM-AutorenStudio.
+  Aufbau: ① Kopfzeile mit Modul-Menü ☰ · ② Hero (Kopfbild, Titel)
+          ③ Schritt-Knöpfe · ④ Inhaltskarte mit {{anzahl}} Seite(n) · ⑤ Fußleiste
+  Bearbeiten: im SCORM-AutorenStudio oder in VS Code
+  (Anleitung: im SCORM-AutorenStudio unter ? Hilfe).
+  ✔ Texte zwischen > und < darfst du ändern.
+  ✘ onclick="…" und data-…-Angaben nicht ändern.
+================================================================================
+-->
+<div data-lernmodul="1" data-lm-layout="bernstein" data-lm-kopfbild="{{kopfbild}}" data-lm-icon="{{icon}}" data-current="1" data-kapitel="{{modulNr}}" style="font-family:Arial,sans-serif !important;font-size:15px;line-height:1.48;color:#231b15;max-width:1600px;margin:0 auto;background:#231b15;border:1px solid #392c22;border-radius:14px;overflow:hidden;box-sizing:border-box;">
+
+<!-- ① KOPFZEILE mit Modul-Menü -->
+<div style="position:relative;z-index:5;display:flex;align-items:center;flex-wrap:wrap;gap:10px;min-height:58px;padding:9px 23px;background:linear-gradient(110deg,#18120e,#2d221b 54%,#1d1611);color:#f8fafb;box-sizing:border-box;">
+<div style="display:flex;align-items:center;gap:22px;flex-wrap:wrap;">
+<div data-menu-wrap="1" style="position:relative;">
+<button type="button" data-menu-btn="1" aria-label="Modulmenü" aria-expanded="false" title="Module wechseln" onclick="{{> menue-auf}}" style="font-family:Arial,sans-serif !important;font-size:27px;font-weight:300;line-height:1;color:#f8fafb;background:transparent;border:0;border-radius:8px;padding:2px 6px;cursor:pointer;">☰</button>
+<div data-modulmenu="1" style="display:none;">
+<div onclick="{{> menue-zu}}" style="position:fixed;inset:0;z-index:1;background:transparent;"></div>
+<div style="position:absolute;top:calc(100% + 14px);left:-6px;z-index:2;width:330px;max-width:calc(100vw - 40px);max-height:70vh;overflow:auto;background:#2d221b;border:1px solid #403126;border-radius:12px;padding:10px;box-shadow:0 18px 40px rgba(0,0,0,.45);box-sizing:border-box;font-size:15px;">
+<div style="padding:4px 12px 10px;font-size:12px;font-weight:700;letter-spacing:0.6px;color:#c6d6de;">MODUL WECHSELN</div>
+<div style="display:flex;flex-direction:column;gap:4px;">
+{{#module}}{{> menue-eintrag}}
+{{/module}}</div>
+<div style="border-top:1px solid #403126;margin:10px 4px 0;padding-top:8px;">
+<a href="#" style="display:block;padding:8px;text-decoration:none !important;color:#e0670b !important;font-size:14px;font-weight:700;">← &nbsp; Zur Kursübersicht</a>
+</div>
+</div>
+</div>
+</div>
+<span style="font-size:15px;">Modul {{modulNr}} <span style="color:#647b8a;padding:0 12px;">│</span><span data-lm="modul-titel" style="color:#c6d6de;">{{modulTitel}}</span></span>
+</div>
+</div>
+
+<div style="container-type:inline-size;">
+<!-- ② HERO mit Kopfbild -->
+<div style="position:relative;box-sizing:border-box;min-height:330px;min-height:clamp(220px,40cqi,330px);padding:58px 5.9% 85px;padding:clamp(26px,7cqi,58px) clamp(16px,5.9cqi,90px) clamp(44px,9cqi,85px);background:linear-gradient(180deg,rgba(35,27,21,.25) 0%,rgba(35,27,21,.35) 45%,rgba(35,27,21,.7) 75%,#231b15 100%),{{#kopfbild}}#1d1611 url('{{kopfbild}}') center center / cover no-repeat{{/kopfbild}}{{^kopfbild}}#1d1611{{/kopfbild}};color:white;">
+<div style="max-width:760px;position:relative;z-index:1;">
+<div style="color:#e0670b;font-weight:700;font-size:16px;letter-spacing:0.3px;margin-bottom:12px;text-shadow:0 1px 3px rgba(0,0,0,.9),0 0 14px rgba(0,0,0,.65);"><span data-section-index="1">{{modulNr}}.1</span> &nbsp; {{modulTitelGross}}</div>
+<div data-lm="titel" style="font-weight:700;font-size:clamp(24px,2.45vw,38px);font-size:clamp(22px,3.8cqi,40px);line-height:1.22;letter-spacing:-0.8px;max-width:720px;margin:0 0 18px;text-shadow:0 2px 12px rgba(0,0,0,.45);">{{titel}}</div>
+<p data-lm="einleitung" style="font-size:clamp(14px,1.14vw,17px);font-size:clamp(14px,1.8cqi,18px);line-height:1.55;max-width:685px;margin:0;color:#f8fafb;text-shadow:0 1px 8px rgba(0,0,0,.5);">{{einleitung}}</p>
+</div></div>
+
+<div style="display:flex;align-items:stretch;gap:10px;gap:clamp(6px,1.2cqi,10px);padding:0 2% 30px 0;margin-top:-16px;position:relative;z-index:2;box-sizing:border-box;">
+<!-- ③ SCHRITT-KNÖPFE -->
+<div style="width:74px;flex:0 0 74px;width:clamp(50px,9cqi,74px);flex:0 0 clamp(50px,9cqi,74px);background:#292019;border-radius:0 28px 28px 0;padding:24px 10px 22px;padding:clamp(14px,3cqi,24px) clamp(4px,1.2cqi,10px) 22px;display:flex;flex-direction:column;align-items:center;gap:11px;box-sizing:border-box;">
+{{#schritte}}{{> knopf}}
+{{/schritte}}</div>
+
+<!-- ④ INHALTSKARTE -->
+<div style="min-width:0;flex:1 1 0;background:linear-gradient(155deg,#ffffff 0%,#f8fafb 65%,#f3f6f7 100%);border-radius:20px;padding:36px 32px 24px;padding:clamp(18px,4.5cqi,36px) clamp(14px,4cqi,32px) clamp(14px,3cqi,24px);box-shadow:0 14px 32px rgba(0,0,0,.16);box-sizing:border-box;">
+{{#schritte}}{{> schritt}}
+{{/schritte}}
+<!-- ⑤ FUSSLEISTE (Zurück · Seitenpunkte · Weiter){{#einSchritt}}
+     Diese Seite hat nur EINEN Schritt, deshalb ist die Fußleiste ausgeblendet
+     (display:none). Kommen weitere Seiten dazu: unten „display:none“ durch
+     „display:flex“ ersetzen und für jede neue Seite einen Seitenpunkt ergänzen.{{/einSchritt}} -->
+<div style="border-top:1px solid #dfe8ed;margin-top:24px;padding-top:18px;display:{{#einSchritt}}none{{/einSchritt}}{{^einSchritt}}flex{{/einSchritt}};flex-wrap:wrap;align-items:center;justify-content:space-between;gap:20px;">
+<button type="button" data-go="back" onclick="{{> blaettern}}" style="font-family:Arial,sans-serif !important;font-weight:700;font-size:15px;color:#292019;background:#f3f6f7;border:1px solid #cdd7dd;border-radius:35px;padding:14px 26px;cursor:pointer;min-width:min(160px,100%);opacity:.45;">← &nbsp; Zurück</button>
+<div style="display:flex;align-items:center;justify-content:center;gap:9px;flex-wrap:wrap;">
+{{#schritte}}{{> punkt}}
+{{/schritte}}</div>
+<button type="button" data-go="next" onclick="{{> blaettern}}" style="font-family:Arial,sans-serif !important;font-weight:700;font-size:15px;color:white;background:linear-gradient(90deg,#873e07,#b45309);border:0;border-radius:35px;padding:14px 28px;cursor:pointer;min-width:min(176px,100%);{{#einSchritt}}opacity:.45;{{/einSchritt}}">Weiter &nbsp; →</button>
+</div>
+</div></div>
+</div>
+</div>
+</script>
+
+<!-- Ein Schritt (eine „Seite“ zum Blättern) -->
+<script type="text/x-vorlage" data-name="schritt">
+<!-- ══ SEITE {{nr}}: {{titel}} ══ -->
+<div data-panel="{{nr}}" style="display:{{#erster}}flex{{/erster}}{{^erster}}none{{/erster}};gap:22px 5%;flex-wrap:wrap;align-items:flex-start;min-height:370px;min-height:clamp(200px,42cqi,370px);">
+{{#hatMedium}}<div style="flex:1 1 280px;min-width:min(100%,230px);">
+<div data-lm="medium" style="overflow:hidden;border-radius:13px;width:100%;max-width:560px;background:#f3f6f7;box-shadow:0 0 1px #cdd7dd;">
+{{{medium}}}
+</div></div>
+<div style="flex:1 1 280px;min-width:min(100%,220px);">
+{{/hatMedium}}{{^hatMedium}}<div style="flex:1 1 100%;min-width:0;">
+{{/hatMedium}}<div style="display:flex;align-items:center;gap:18px;margin:0 0 14px;">
+{{> icon}}
+<div><div style="font-size:13px;color:#b45309;font-weight:700;letter-spacing:0.2px;">{{seitenTitelGross}}</div><h2 data-lm="schritt-titel" style="font-family:Arial,sans-serif !important;font-size:clamp(23px,1.7vw,31px);font-size:clamp(20px,3.2cqi,31px);line-height:1.12;font-weight:700;color:#231b15;margin:4px 0 0;">{{titel}}</h2></div>
+</div>
+<div data-lm="text" style="color:#463c34;font-size:15px;line-height:1.55;">
+{{{text}}}
+</div>
+</div></div>
+</script>
+
+<!-- Icon-Kachel neben der Schritt-Überschrift (ohne Icon: „!“) -->
+<script type="text/x-vorlage" data-name="icon">
+{{#icon}}<div aria-hidden="true" style="flex:0 0 55px;height:55px;border-radius:10px;overflow:hidden;background:linear-gradient(145deg,#e5690b,#873e07);"><img src="{{icon}}" alt="" style="display:block;width:100%;height:100%;object-fit:contain;"></div>{{/icon}}{{^icon}}<div aria-hidden="true" style="flex:0 0 55px;height:55px;display:flex;align-items:center;justify-content:center;border-radius:10px;background:linear-gradient(145deg,#e5690b,#873e07);color:white;font-weight:700;font-size:31px;">!</div>{{/icon}}
+</script>
+
+<!-- Runder Schritt-Knopf links -->
+<script type="text/x-vorlage" data-name="knopf">
+<button type="button" data-go="{{nr}}" data-step="{{nr}}" aria-label="Lernabschnitt {{nr}}"{{#erster}} aria-current="step"{{/erster}} onclick="{{> blaettern}}" style="font-family:Arial,sans-serif !important;color:{{#erster}}#ffffff{{/erster}}{{^erster}}#dfe8ed{{/erster}};background:{{#erster}}#b45309{{/erster}}{{^erster}}#403126{{/erster}};border:0;border-radius:50%;width:42px;height:42px;flex:0 0 42px;font-size:17px;width:clamp(34px,5.5cqi,42px);height:clamp(34px,5.5cqi,42px);flex:0 0 clamp(34px,5.5cqi,42px);font-size:clamp(14px,2.2cqi,17px);cursor:pointer;line-height:1;">{{nr}}</button>
+</script>
+
+<!-- Seitenpunkt in der Fußleiste -->
+<script type="text/x-vorlage" data-name="punkt">
+<button type="button" data-go="{{nr}}" data-dot="{{nr}}" aria-label="Seite {{nr}}{{#erster}} (aktiv){{/erster}}" onclick="{{> blaettern}}" style="background:{{#erster}}#b45309{{/erster}}{{^erster}}#cdd7dd{{/erster}};width:{{#erster}}34px{{/erster}}{{^erster}}13px{{/erster}};height:7px;border:0;border-radius:15px;padding:0;cursor:pointer;transition:all .2s;"></button>
+</script>
+
+<!-- Eintrag im Modul-Menü ☰ (das aktuelle Modul hervorgehoben) -->
+<script type="text/x-vorlage" data-name="menue-eintrag">
+<a href="#" {{#aktiv}}aria-current="page" {{/aktiv}}style="display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:9px;text-decoration:none !important;color:{{#aktiv}}#ffffff{{/aktiv}}{{^aktiv}}#dfe8ed{{/aktiv}} !important;background:{{#aktiv}}#b45309{{/aktiv}}{{^aktiv}}transparent{{/aktiv}};"><span style="flex:0 0 28px;height:28px;border-radius:50%;color:#ffffff;display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;background:{{#aktiv}}rgba(255,255,255,.22){{/aktiv}}{{^aktiv}}#403126{{/aktiv}};">{{nr}}</span><span style="line-height:1.3;">{{titel}}</span></a>
+</script>
+
+<!-- Blättern (Knöpfe, Punkte, Weiter/Zurück). Steht in onclick="…", daher nur ' als Anführungszeichen. -->
+<script type="text/x-vorlage" data-name="blaettern">
+var r=this.closest('[data-lernmodul]');var t=r.querySelectorAll('[data-panel]').length;var c=Number(r.getAttribute('data-current'));var g=this.getAttribute('data-go');var n=g==='next'?c+1:g==='back'?c-1:Number(g);n=Math.max(1,Math.min(t,n));r.setAttribute('data-current',String(n));r.querySelectorAll('[data-panel]').forEach(function(p){p.style.display=Number(p.getAttribute('data-panel'))===n?'flex':'none';});r.querySelectorAll('[data-step]').forEach(function(b){var on=Number(b.getAttribute('data-step'))===n;b.style.background=on?'#b45309':'#403126';b.style.color=on?'#ffffff':'#dfe8ed';if(on){b.setAttribute('aria-current','step');}else{b.removeAttribute('aria-current');}});r.querySelectorAll('[data-dot]').forEach(function(b){var on=Number(b.getAttribute('data-dot'))===n;b.style.width=on?'34px':'13px';b.style.background=on?'#b45309':'#cdd7dd';b.setAttribute('aria-label','Seite '+b.getAttribute('data-dot')+(on?' (aktiv)':''));});var s=r.querySelector('[data-section-index]');if(s){s.textContent=r.getAttribute('data-kapitel')+'.'+n;}r.querySelectorAll('[data-go=back]').forEach(function(b){b.style.opacity=n===1?'.45':'1';});r.querySelectorAll('[data-go=next]').forEach(function(b){b.style.opacity=n===t?'.45':'1';});
+</script>
+
+<script type="text/x-vorlage" data-name="menue-auf">
+var m=this.parentElement.querySelector('[data-modulmenu]');var o=m.style.display==='block';m.style.display=o?'none':'block';this.setAttribute('aria-expanded',o?'false':'true');
+</script>
+
+<script type="text/x-vorlage" data-name="menue-zu">
+var w=this.closest('[data-menu-wrap]');w.querySelector('[data-modulmenu]').style.display='none';w.querySelector('[data-menu-btn]').setAttribute('aria-expanded','false');
+</script>
+
+
+<!-- ═══ 3) PLAYER-CSS: Farben des Lernpaket-Rahmens (Übersicht, Leiste) ═════ -->
+<script type="text/x-vorlage" data-name="player-css">
+/* Bernstein: Farben des Players aus Hauptfarbe und Schmuckfarben */
+:root { --hauptfarbe: #b45309; --hauptfarbe-hell: #f3f6f7; --akzent: #e0670b; --dunkel: #231b15; --dunkel-text: #f8fafb;
+        --seite: #f3f6f7; --text: #231b15; --text-blass: #647b8a; --linie: #dfe8ed; }
+.leiste { background: linear-gradient(110deg, #18120e, #2d221b 54%, #1d1611); }
+.leiste-knopf { border-color: #647b8a; }
+.leiste-fortschritt { color: #dfe8ed; }
+.mini-balken > span { background: #e0670b; }
+.uebersicht { background: radial-gradient(circle at 85% 0%, rgba(180,83,9, .35), transparent 480px), var(--dunkel); }
+.ue-karte { background: linear-gradient(155deg, #fff 0%, #f8fafb 65%, #f3f6f7 100%); }
+.balken { background: #dfe8ed; }
+.balken > span { background: linear-gradient(90deg, #873e07, var(--hauptfarbe)); }
+.modul-karte:hover { border-color: #a6b8c3; }
+.modul-nr { background: #403126; }
+.knopf-zweit { border-color: #cdd7dd; }
+</script>
+
+<!-- Farben für Übungen (Leitner-Test) – ergänzt player-css -->
+<script type="text/x-vorlage" data-name="leitner-css">
+:root { --hauptfarbe-dunkel: #873e07; --richtig: #1d7a4a; }
+.leitner { background: radial-gradient(circle at 85% 0%, rgba(180,83,9, .35), transparent 480px), var(--dunkel); }
+.kopf { background: linear-gradient(110deg, #18120e, #2d221b 54%, #1d1611); }
+.chip { border-color: #647b8a; }
+.karte { background: linear-gradient(155deg, var(--karte) 0%, #f8fafb 65%, #f3f6f7 100%); }
+.balken { background: #dfe8ed; }
+.fach.fach-null { border-top-color: #cdd7dd; }
+.knopf { box-shadow: 0 6px 16px rgba(180,83,9, .25); }
+.punkt { background: #cdd7dd; }
+.antwort:hover { border-color: #a6b8c3; }
+.antwort-marke { border-color: #a6b8c3; }
+</script>
+</body>
+</html>

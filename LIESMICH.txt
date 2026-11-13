@@ -1,0 +1,90 @@
+﻿SCORM-AutorenStudio 3.48.0
+====================================================================
+
+Kurse und Übungen für Moodle erstellen – ohne Programmieren, ohne
+Installation und ohne Internetverbindung.
+
+
+LOSLEGEN
+--------
+  SCORM-AutorenStudio.html doppelklicken (in Google Chrome oder
+  Microsoft Edge). Diese eine Datei enthält alles – auch die Anleitung
+  (im Programm oben rechts „? Hilfe“ oder Taste F1).
+
+  Nur einen Vortrag als Lernpaket verpacken?
+  SCORM-AutorenStudio-Lite.html doppelklicken. Das ist die vereinfachte
+  Ausgabe mit drei Schritten: Seiten (Text und Bild, auch aus PowerPoint
+  oder PDF) → Abschlusstest (freiwillig) → für Moodle speichern.
+  Ein Lernpaket aus der Lite-Ausgabe lässt sich später im großen Studio
+  weiterbearbeiten.
+
+
+WAS KANN ES?
+------------
+  • Kurse mit Modulen, Seiten und Schritten: Texte, Bilder, Videos, Ton
+  • 17 Fragearten, auf Wunsch als Pflichtfrage
+  • Interaktive Bausteine: Reiter, Klappkarten, Bild mit Info-Punkten,
+    Ablauf, Galerie, Vorher/Nachher, Glossar, Fallszenario,
+    Software-Simulation, Freie Folie
+  • Abschlusstest mit Bestehensgrenze, Teilnahmebestätigung
+  • Übungen nach dem Leitner-Prinzip (Karteikasten)
+  • Übernahme aus PowerPoint, PDF und vorhandenen SCORM-Paketen
+  • Austauschbare Layouts, eigene Layouts per Assistent
+  • Punkte und Abzeichen
+  • Lernpakete (SCORM 1.2) für Moodle – auch für Handy und Tablet
+
+
+WAS LIEGT IN DIESEM ORDNER?
+---------------------------
+  SCORM-AutorenStudio.html       das Programm
+  SCORM-AutorenStudio-Lite.html  die vereinfachte Ausgabe
+  LIESMICH.txt                   diese Datei
+  LIZENZ.txt                     die Lizenz (EUPL 1.2, amtlicher deutscher Text)
+  LICENSE                        dieselbe Lizenz, amtlicher englischer Text
+  LIZENZ-HINWEISE.txt            Urheber, Erlaubnis für Lernpakete,
+                                 enthaltene fremde Software, KI-Hinweis
+  README.md, Bilder\             Übersichtsseite mit Bildern (für die
+                                 Veröffentlichung im Internet)
+  Quellen\                       lesbare Quellen aller Bausteine und das
+                                 Werkzeug zum Zusammenbauen – nur nötig,
+                                 wenn du das Programm verändern willst
+
+  Zum Arbeiten genügt eine der beiden HTML-Dateien. Wer das Programm
+  weitergibt, gibt bitte den ganzen Ordner weiter (so verlangt es die Lizenz).
+
+
+DATENSCHUTZ UND SICHERHEIT
+--------------------------
+  Das Programm läuft nur auf deinem Rechner. Es lädt nichts aus dem
+  Internet nach und sendet keine Daten. Es greift nur auf den Ordner zu,
+  den du ausdrücklich freigibst.
+
+  Einzige Ausnahme: YouTube. Bettest du über den Knopf „▶ YouTube“ ein
+  Video ein, verbindet sich der Browser beim Abspielen mit YouTube
+  (Google) – im Studio und im fertigen Lernpaket. Das Studio nutzt dafür
+  die datensparsame Adresse youtube-nocookie.com. Ohne YouTube-Video
+  entsteht keine Verbindung ins Internet.
+
+  Näheres im Programm: ? Hilfe → Sicherheit.
+
+
+FREIE SOFTWARE (OPEN SOURCE)
+----------------------------
+  Copyright (c) 2026 Sven-Michael Kern
+  Lizenziert unter der EUPL, Version 1.2 oder neuer.
+
+  Du darfst das Programm kostenlos nutzen, weitergeben und verändern.
+  Wer es (auch verändert) weitergibt, gibt die Lizenz und den Quelltext
+  mit – so bleibt es für alle frei. Maßgeblich ist allein der Lizenztext
+  in LIZENZ.txt.
+
+  Lernpakete, die du mit dem Programm erstellst, gehören dir. Für sie
+  gelten keine Lizenzpflichten (siehe LIZENZ-HINWEISE.txt, Abschnitt 2).
+
+  Das Programm wird ohne Gewährleistung bereitgestellt.
+
+
+HINWEIS ZUR ENTSTEHUNG (KÜNSTLICHE INTELLIGENZ)
+-----------------------------------------------
+  Dieses Programm wurde von Sven-Michael Kern mit Unterstützung
+  künstlicher Intelligenz (Claude, Anthropic) entwickelt.
