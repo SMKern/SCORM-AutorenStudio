@@ -271,7 +271,7 @@ Knöpfe, Zähler und *Weiter/Zurück* passt das Studio automatisch an.
 | **▭ Infokasten** / **❗ Merke** | Kasten mit Rahmen / hervorgehobener Hinweis |
 | **⚠ Warnung** | roter Warnhinweis, z. B. für Gefahren |
 | **⌄ Aufklappen** | Überschrift ist sichtbar, der Inhalt erst nach einem Klick. Gut für Zusatzwissen und Lösungen. Im Editor ist der Bereich immer offen. |
-| **⊞ Tabelle** | fragt nach Spalten und Zeilen |
+| **⊞ Tabelle** | fragt nach Spalten und Zeilen. Danach lässt sich die Tabelle jederzeit weiter bearbeiten (siehe [Tabellen bearbeiten](#tabellen-bearbeiten)). |
 | **― Linie** | Trennlinie |
 | **😊 Emoji** | Emoji an der Schreibstelle einfügen. Die Emojis sind wie am Handy nach Gruppen sortiert: Oben wählst du den Reiter (🕘 Zuletzt verwendet, ⚕️ Medizin & Erste Hilfe, 😀 Smileys & Personen, 🐻 Tiere & Natur, 🍔 Essen, ⚽ Aktivitäten, 🚗 Reisen, 💡 Objekte, ❤️ Symbole), darunter erscheinen nur die Emojis dieser Gruppe. Das Fenster bleibt offen, bis du daneben klickst oder **Esc** drückst. Wie ein Emoji im Text aussieht, hängt vom Gerät der Lernenden ab – soll es überall gleich aussehen, nimm eine **Bildkarte** (siehe Kapitel 11). |
 | **🖼 Bild** / **🎬 Video** | Bild bzw. Video mitten in den Text |
@@ -288,6 +288,39 @@ Knöpfe, Zähler und *Weiter/Zurück* passt das Studio automatisch an.
 - **Rechtschreibung:** Fehler sind rot unterstrichen. Rechtsklick → Vorschlag wählen.
 - **Text aus Word einfügen:** einfach `Strg + V`. Fremde Schriften und Farben fallen dabei weg.
 - Im Editor legst du nur fest, *was* etwas ist (Überschrift, Liste, Warnung). *Wie* es aussieht, bestimmt das Layout.
+
+### Elemente anordnen
+
+Zeigt die Maus auf ein Element im Text – Absatz, Tabelle, Kasten, Bild, Frage, Baustein –, erscheint darüber ein kleiner Griff:
+
+| Knopf | Wirkung |
+|---|---|
+| **⠿** | mit gedrückter Maustaste **ziehen**: Ein blauer Strich zeigt, wo das Element landet – auch in einer Spalte. **Esc** bricht ab. |
+| **↑ ↓** | eine Stelle nach oben bzw. unten |
+| **⫼ Nebeneinander** | stellt das Element und das nächste **nebeneinander in Spalten**. Steht es schon in Spalten, kommt eine Spalte dazu (höchstens vier). |
+| **⊟** | Spalten auflösen: alles steht wieder untereinander |
+| **🗑** | Element löschen |
+
+- In jeder Spalte kannst du schreiben und mit der Werkzeugleiste weitere Elemente einfügen. Im Editor sind Spalten gestrichelt umrandet.
+- **Im Lernpaket** stehen die Spalten nebeneinander, solange der Platz reicht. Auf dem Handy rutschen sie automatisch untereinander.
+- **Rückgängig:** `Strg + Z` oder **↶** nimmt Verschieben und Tabellen-Änderungen zurück, solange du danach noch nichts getippt hast.
+
+### Tabellen bearbeiten
+
+Steht der Cursor in einer Tabelle, erscheint darunter die **Tabellen-Leiste**:
+
+| Knopf | Wirkung |
+|---|---|
+| **＋ Zeile ↑ / ↓**, **− Zeile** | Zeile darüber oder darunter einfügen, Zeile löschen |
+| **＋ Spalte ← / →**, **− Spalte** | Spalte links oder rechts einfügen, Spalte löschen |
+| **⊞ Verbinden** / **⊟ Teilen** | Mehrere Zellen markieren (mit gedrückter Maustaste darüberziehen oder **Umschalt + Klick**) und zu einer Zelle verbinden – oder eine verbundene Zelle wieder teilen |
+| **🎨 Farbe** | Hintergrundfarbe der Zelle bzw. der markierten Zellen. Bei dunklen Farben wird die Schrift automatisch weiß. |
+| **⇤ ↔ ⇥** | Text links, mittig oder rechts |
+| **▤ Kopfzeile** | erste Zeile als hervorgehobene Kopfzeile ein- oder ausschalten |
+| **⇹ Gleich breit** | Spaltenbreiten zurücksetzen |
+| **🗑 Tabelle** | ganze Tabelle löschen |
+
+**Spaltenbreite ändern:** mit der Maus auf den Rand zwischen zwei Spalten gehen (der Zeiger wird zum Doppelpfeil) und ziehen.
 
 ### Interaktive Bausteine
 
@@ -341,6 +374,7 @@ Mit der **🎨 Freien Folie** gestaltest du eine Seite **wie in PowerPoint**: Te
 | Was | Wie |
 |---|---|
 | **📚 Folienbibliothek** | oben rechts: 20 fertige Folien – Titelfolie, Zwischencharts, Aufzählung, zwei und drei Spalten mit Kopf, Kernaussage mit fünf Punkten, vier Felder mit Mitte, Haus, Prozess, Ablauf, Gliederung, Kreislauf, Zeitleiste, Meilensteine u. a. Schlicht gestaltet, in der Hauptfarbe des Layouts: farbiges Kopfband, schmale Fußleiste, ruhige Grautöne. Die Vorlage ersetzt die aktuelle Folie (Strg+Z macht das rückgängig); danach ist jedes Element frei bearbeitbar. Die Fußzeile (Titel, Name, Datum) bitte anpassen. |
+| **⭐ Eigene Vorlagen** | **⭐ Als Vorlage** (oben) legt die aktuelle Folie in die Folienbibliothek unter **Eigene Vorlagen** – mit allen Bildern; sie steht dann in **allen** Kursen bereit. **📥 Folienmaster aus PowerPoint übernehmen** (in der Folienbibliothek) liest die Folienlayouts aus dem Folienmaster einer PowerPoint-Datei (.pptx) oder -Vorlage (.potx): Hintergrund, Logos, Formen und Platzhalter für Titel, Text und Bild. Nicht benötigte Layouts vorher abwählen. Auf einer eigenen Vorlage: **✎** umbenennen oder in eine andere Gruppe schieben, **🗑** löschen. **Bearbeiten:** Vorlage übernehmen, ändern, dann mit **⭐ Als Vorlage** die alte ersetzen. **Weitergeben:** **💾 Eigene Vorlagen als Datei speichern** erzeugt `Meine-Vorlagen.folienbibliothek.json`; andere laden sie mit **📂 Vorlagen-Datei laden**. Die eigenen Vorlagen liegen im Browser – bei einem anderen Browser oder Rechner die Datei laden. |
 | **Einfügen** | oben **𝐓 Textfeld**, **▭ Kasten mit Text** (farbig hinterlegt), **◆ Form** (Rechteck, abgerundet, Kreis, Dreieck, Raute, Blockpfeile, Chevron, Sechseck, Stern, Sprechblase, Plus, Kasten mit Spitze unten), **🖼 Bild**, **🔖 Icon**, **🎬 Video**, **╱ Linie**, **➝ Pfeil** |
 | **Verschieben** | Element ziehen. Rosa Hilfslinien zeigen, wann es bündig mit der Folienmitte, dem Rand oder anderen Elementen ist. **Alt** = ohne Einrasten, **Umschalt** = nur waagrecht/senkrecht. Pfeiltasten = fein verschieben (mit Umschalt weiter). |
 | **Größe und Drehung** | an den weißen Griffen ziehen; der runde Griff oben dreht (Umschalt = 15°-Schritte). Bilder behalten an den Ecken ihr Seitenverhältnis. Bei Linien und Pfeilen zieht man die beiden Enden. |
