@@ -320,6 +320,61 @@ body { margin: 0; background: var(--seite); color: var(--text); font-family: var
   .seitenleiste { top: 0; max-height: 100vh; }
 }
 
+/* E) FESTER RAHMEN (SCORM-AutorenStudio 3.50) – ab Tablet-Größe
+   Im Modul bleiben die Leiste oben, Kopfzeile und Titelbereich der Seite, die Schritt-Knöpfe und die
+   Fußleiste (Zurück · Weiter) stehen; nur der Inhalt des offenen Schritts rollt. Der Titelbereich
+   wird dafür flacher. Das Programm markiert die Bausteine (Funktion rahmenMarkieren) und setzt
+   den Schalter „ansicht-modul“ an <html>. Die Werte --lm-k-… sind „höchstens so groß wie bisher“
+   (min(…, Originalwert)), damit kein Layout größer wird, als es war.
+   Auf dem Handy und in sehr niedrigen Fenstern bleibt alles wie bisher (ganze Seite rollt). */
+@media screen and (min-width: 761px) and (min-height: 500px) {
+  .leiste { padding-top: 5px; padding-bottom: 5px; }
+  .leiste-knopf { padding-top: 4px; padding-bottom: 4px; }
+  html.ansicht-modul, html.ansicht-modul body { height: 100%; }
+  html.ansicht-modul body { display: flex; flex-direction: column; overflow: hidden; }
+  html.ansicht-modul .leiste { flex: none; }
+  html.ansicht-modul .kurs-rahmen { flex: 1 1 0; min-height: 0; align-items: stretch; }
+  html.ansicht-modul .seitenleiste { position: static; max-height: none; }
+  html.ansicht-modul .inhalt { display: flex; flex-direction: column; min-height: 0; padding-top: 10px; padding-bottom: 10px; overflow: hidden; }
+  html.ansicht-modul .inhalt > * { flex: none; width: 100%; }
+  html.ansicht-modul #module { flex: 1 1 0; min-height: 0; display: flex; flex-direction: column; }
+  html.ansicht-modul .modul:not([hidden]), html.ansicht-modul .lm-teil:not([hidden]) { flex: 1 1 0; min-height: 0; display: flex; flex-direction: column; }
+  html.ansicht-modul .lm-teil > * { flex: none; }
+  html.ansicht-modul .lm-teil.lm-fest-ganz { display: block; overflow-y: auto; }
+  html.ansicht-modul .modul-fuss { margin-top: 8px; padding-top: 6px; padding-bottom: 6px; }
+  html.ansicht-modul .modul-fuss .knopf { padding-top: 5px; padding-bottom: 5px; }
+  html.ansicht-modul .hinweis { margin-bottom: 8px; padding-top: 6px; padding-bottom: 6px; }
+  /* Weg von der Seite bis zum Inhaltsbereich: füllt die Höhe */
+  html.ansicht-modul .lm-teil > .lm-fest-wurzel { flex: 1 1 0 !important; min-height: 0 !important; width: 100%; }
+  html.ansicht-modul .lm-fest-spalte { display: flex !important; flex-direction: column !important; }
+  html.ansicht-modul .lm-fest-spalte > * { flex: none !important; }
+  html.ansicht-modul .lm-fest-spalte > .lm-fest-pfad { flex: 1 1 0 !important; min-height: 0 !important; }
+  html.ansicht-modul .lm-fest-spalte > .lm-fest-breit { width: 100%; }
+  html.ansicht-modul .lm-fest-reihe { flex-wrap: nowrap !important; }
+  html.ansicht-modul .lm-fest-reihe > .lm-fest-pfad { align-self: stretch !important; min-height: 0 !important; }
+  html.ansicht-modul .lm-fest-reihe > :not(.lm-fest-pfad) { max-height: 100%; overflow-y: auto; scrollbar-width: thin; }
+  /* Inhaltsbereich: nur der offene Schritt rollt */
+  html.ansicht-modul .lm-fest-karte { overflow: hidden !important; }
+  html.ansicht-modul .lm-fest-karte > [data-panel] { flex: 1 1 0 !important; min-height: 0 !important; overflow-y: auto !important; overscroll-behavior: contain; }
+  html.ansicht-modul .lm-fest-randlos > [data-panel] { margin-right: calc(-1 * var(--lm-k-pr)) !important; padding-right: var(--lm-k-pr) !important; }
+  /* flacher: höchstens so groß wie im Layout */
+  html.ansicht-modul .lm-k-mh { min-height: var(--lm-k-mh) !important; }
+  html.ansicht-modul .lm-k-h  { height: var(--lm-k-h) !important; }
+  html.ansicht-modul .lm-k-pt { padding-top: var(--lm-k-pt) !important; }
+  html.ansicht-modul .lm-k-pb { padding-bottom: var(--lm-k-pb) !important; }
+  html.ansicht-modul .lm-k-mt { margin-top: var(--lm-k-mt) !important; }
+  html.ansicht-modul .lm-k-mb { margin-bottom: var(--lm-k-mb) !important; }
+  html.ansicht-modul .lm-k-fs { font-size: var(--lm-k-fs) !important; }
+  /* Sobald man im Inhalt rollt, klappt der Titelbereich ein (ohne Einleitung, kleinerer Titel).
+     Er öffnet sich wieder beim nächsten Schritt oder Teil – nicht schon beim Zurückrollen, sonst
+     könnte die Seite bei knappem Inhalt hin und her springen. */
+  html.ansicht-modul .lm-eingeklappt .lm-fest-titel [data-lm="einleitung"] { display: none !important; }
+  html.ansicht-modul .lm-eingeklappt .lm-fest-titel.lm-k-pt { padding-top: min(8px, var(--lm-k-pt)) !important; }
+  html.ansicht-modul .lm-eingeklappt .lm-fest-titel.lm-k-pb { padding-bottom: min(28px, var(--lm-k-pb)) !important; }
+  html.ansicht-modul .lm-eingeklappt .lm-fest-titel [data-lm="titel"].lm-k-fs { font-size: min(22px, var(--lm-k-fs)) !important; }
+  html.ansicht-modul .lm-eingeklappt .lm-fest-titel [data-lm="titel"].lm-k-mb { margin-bottom: 0 !important; }
+}
+
 /* Ergänzungen (SCORM-AutorenStudio 3): Modulbeschreibung, gesperrte Module, Teilnahmebestätigung */
 .modul-beschreibung { display: block; font-size: 13px; color: var(--text-blass); margin: 2px 0; }
 .modul-karte.gesperrt { opacity: .55; cursor: not-allowed; }
@@ -2007,6 +2062,7 @@ var TEXTE = {
     var oben = document.createElement('div'); oben.className = 'oben-anker'; oben.setAttribute('aria-hidden', 'true');
     el.insertBefore(oben, el.firstChild);
     bildschirmAnpassen(el);
+    rahmenMarkieren(el);
     return { id: id, el: el, oben: oben, seiten: nummern.length ? nummern : ['1'], mitSchritten: nummern.length > 0 };
   }
   // Passt die Reihe der Schritt-Knöpfe nicht in die Breite (Handy), den Knopf des offenen Schritts in die Mitte rollen
@@ -2060,6 +2116,76 @@ var TEXTE = {
       t.parentNode.insertBefore(r, t); r.appendChild(t);
     });
   }
+  // ── Fester Rahmen (SCORM-AutorenStudio 3.50) ──
+  // Markiert den Weg von der Kursseite bis zu dem Bereich, in dem die Schritte (data-panel) liegen. Damit
+  // bringt der CSS-Abschnitt „E) FESTER RAHMEN“ die Seite auf Fensterhöhe: Kopf, Schritt-Knöpfe und
+  // Fußleiste bleiben stehen, nur der offene Schritt rollt. Passt eine Seite nicht in dieses Muster
+  // (z. B. alte Seiten ohne Schritte), rollt der ganze Teil wie bisher – nur unter der festen Leiste.
+  function kleiner(e, eig, kurz, max) {   // Inline-Wert höchstens „max“ groß machen (nie größer als im Layout)
+    var v = e && e.style && e.style[eig];
+    if (!v || /^-/.test(v) || /^0(px)?$/.test(v)) return;   // nicht gesetzt, negativ (Überlappung) oder schon 0
+    e.style.setProperty('--lm-k-' + kurz, 'min(' + max + ', ' + v + ')');
+    e.classList.add('lm-k-' + kurz);
+  }
+  function rahmenMarkieren(el) {
+    el.classList.add('lm-teil');
+    var kinder = Array.prototype.filter.call(el.children, function (c) {
+      return !/^(SCRIPT|STYLE|LINK|META|TEMPLATE)$/.test(c.tagName) && !c.classList.contains('oben-anker');
+    });
+    var wurzel = kinder.length === 1 ? kinder[0] : null;
+    var panels = wurzel ? wurzel.querySelectorAll('[data-panel]') : [];
+    var karte = panels.length ? panels[0].parentNode : null;
+    if (!karte || !Array.prototype.every.call(panels, function (p) { return p.parentNode === karte; })) { el.classList.add('lm-fest-ganz'); return; }
+    var weg = [];
+    for (var e = karte; e && e !== wurzel; e = e.parentNode) weg.unshift(e);
+    weg.unshift(wurzel);
+    wurzel.classList.add('lm-fest-wurzel');
+    weg.forEach(function (b, i) {
+      b.classList.add('lm-fest-pfad');
+      if (b === karte) return;
+      var reihe = b.style.display === 'flex' && !/column/.test(b.style.flexDirection || '');
+      b.classList.add(reihe ? 'lm-fest-reihe' : 'lm-fest-spalte');
+      if (b !== wurzel) { kleiner(b, 'paddingTop', 'pt', '12px'); kleiner(b, 'paddingBottom', 'pb', '14px'); }
+      if (reihe) return;
+      Array.prototype.forEach.call(b.children, function (c) {
+        if (/auto/.test(c.style.marginLeft + ' ' + c.style.marginRight)) c.classList.add('lm-fest-breit');
+        if (c === weg[i + 1]) return;
+        if (c.querySelector('[data-menu-btn]')) {            // Kopfzeile mit Modul-Menü
+          kleiner(c, 'minHeight', 'mh', '40px'); kleiner(c, 'paddingTop', 'pt', '4px'); kleiner(c, 'paddingBottom', 'pb', '4px');
+        } else if (c.querySelector('[data-lm="titel"]')) {   // Titelbereich (Kopfbild, Titel, Einleitung)
+          c.classList.add('lm-fest-titel');
+          kleiner(c,'minHeight', 'mh', '0px'); kleiner(c, 'paddingTop', 'pt', '16px'); kleiner(c, 'paddingBottom', 'pb', '34px');
+          var t = c.querySelector('[data-lm="titel"]'), ein = c.querySelector('[data-lm="einleitung"]');
+          kleiner(t, 'fontSize', 'fs', '30px'); kleiner(t, 'marginBottom', 'mb', '8px'); kleiner(ein, 'fontSize', 'fs', '15px');
+        } else if (!c.textContent.trim() && c.style.height) kleiner(c, 'height', 'h', '90px');   // reiner Bildstreifen
+      });
+    });
+    // Inhaltsbereich: senkrecht, nur der offene Schritt rollt; Rollbalken am rechten Rand des Bereichs
+    karte.classList.add('lm-fest-spalte', 'lm-fest-karte');
+    kleiner(karte, 'paddingTop', 'pt', '18px'); kleiner(karte, 'paddingBottom', 'pb', '12px');
+    if (karte.style.paddingRight && Array.prototype.every.call(panels, function (p) { return !p.style.paddingRight && !p.style.marginRight; })) {
+      karte.style.setProperty('--lm-k-pr', karte.style.paddingRight);
+      karte.classList.add('lm-fest-randlos');
+    }
+    // Fußleiste (Zurück · Weiter) flacher
+    Array.prototype.forEach.call(wurzel.querySelectorAll('.lm-fussleiste'), function (f) {
+      kleiner(f, 'marginTop', 'mt', '10px'); kleiner(f, 'paddingTop', 'pt', '10px'); kleiner(f, 'paddingBottom', 'pb', '10px');
+      Array.prototype.forEach.call(f.querySelectorAll('[data-go="back"], [data-go="next"]'), function (k) {
+        kleiner(k, 'paddingTop', 'pt', '9px'); kleiner(k, 'paddingBottom', 'pb', '9px');
+      });
+    });
+  }
+  // Im Modul gilt der feste Rahmen, in Übersicht und Abschlusstest rollt die Seite wie gewohnt.
+  // Nicht in der Moodle-App: Sie macht den Rahmen (iframe) so hoch wie seinen Inhalt und rollt die äußere Seite.
+  var IN_APP = /MoodleMobile/i.test(navigator.userAgent || '');
+  function ansichtModul(an) { document.documentElement.classList.toggle('ansicht-modul', !!an && !IN_APP); }
+  // Rollt man im Inhalt eines Schritts nach unten, klappt der Titelbereich ein (wieder offen: nachOben)
+  document.addEventListener('scroll', function (ev) {
+    var p = ev.target;
+    if (!p || !p.matches || !p.matches('.lm-fest-karte > [data-panel]') || p.scrollTop < 24) return;
+    var t = p.closest('.lm-teil');
+    if (t && !t.classList.contains('lm-eingeklappt')) t.classList.add('lm-eingeklappt');
+  }, true);
   // ── Nach oben springen – auch in Moodle und in der Moodle-App auf dem Handy ──
   // In Moodle steckt das Lernpaket in einem Rahmen (iframe). Auf dem Handy und in der Moodle-App scrollt dann
   // oft die äußere Seite und nicht das Paket selbst – window.scrollTo allein hilft dort nicht. scrollIntoView an
@@ -2067,6 +2193,9 @@ var TEXTE = {
   // der Anker gerade nicht zu sehen ist (block: 'nearest'). Steht man schon oben, bewegt sich nichts.
   function nachOben(anker) {
     try { window.scrollTo(0, 0); } catch (e) { }
+    // fester Rahmen: rollende Bereiche im Paket ebenfalls an den Anfang
+    Array.prototype.forEach.call(document.querySelectorAll('.lm-fest-karte > [data-panel], .lm-fest-ganz, .inhalt'), function (b) { if (b.scrollTop) b.scrollTop = 0; });
+    Array.prototype.forEach.call(document.querySelectorAll('.lm-eingeklappt'), function (t) { t.classList.remove('lm-eingeklappt'); });
     var a = anker || document.getElementById('obenAnker');
     if (!a) { a = document.createElement('div'); a.id = 'obenAnker'; a.className = 'oben-anker'; a.setAttribute('aria-hidden', 'true'); a.style.scrollMarginTop = '0'; document.body.insertBefore(a, document.body.firstChild); }
     try { a.scrollIntoView({ block: 'nearest', inline: 'nearest' }); } catch (e) { try { a.scrollIntoView(true); } catch (x) { } }
@@ -2519,6 +2648,7 @@ var TEXTE = {
     aktuell = -1;
     MODULE.forEach(function (m) { m.el.hidden = true; });
     $('modulFuss').hidden = true;
+    ansichtModul(false);
     var st = zaehlen();
     var html, fort, zumTest;
     if (SEITENLEISTE_AN) {
@@ -2622,6 +2752,7 @@ var TEXTE = {
     MODULE.forEach(function (x, n) { x.el.hidden = n !== i; });
     if (m.teile.length > 1) m.teile.forEach(function (t, n) { t.el.hidden = n !== teilNr; });
     $('modulFuss').hidden = false;
+    ansichtModul(true);
     if (seite) zuSeite(m.teile[teilNr], seite);
     nachOben();
     aktivenSchrittZeigen(m.teile[teilNr].el);
@@ -2787,6 +2918,7 @@ var TEXTE = {
     aktuell = -2;
     MODULE.forEach(function (m) { m.el.hidden = true; });
     $('modulFuss').hidden = true;
+    ansichtModul(false);
     var ue = $('uebersicht');
     ue.innerHTML = '<div class="uebersicht"><div class="ue-kopf"><div class="ue-kategorie">' + T('testKategorie') + '</div>' +
       '<h1 class="ue-titel">' + esc(TEST.titel) + '</h1>' + (kopf || '') + '</div><div class="ue-rahmen"><div class="ue-karte">' + innen + '</div></div></div>';

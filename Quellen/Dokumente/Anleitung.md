@@ -650,6 +650,8 @@ Links auf **🎨 Layout** klicken. Für jedes Layout gibt es diese Knöpfe:
 - Ab 500 MB weist das Studio auf den Offline-Download hin.
 - Über 4 GB passt es nicht in ein Paket. Dann „ein Paket pro Modul“ wählen.
 
+**Fester Rahmen am Computer:** Am Computer und auf dem Tablet bleibt der Rahmen einer Seite stehen: die Leiste oben, die Kopfzeile mit Titel, die Schritt-Knöpfe und „Zurück“/„Weiter“. Ist ein Schritt länger als der Platz, rollt nur sein Inhalt. Sobald man darin nach unten rollt, wird der Titelbereich flacher (ohne Einleitung). Beim nächsten Schritt ist er wieder vollständig da. Auch das gilt für alle Layouts. In Übersicht und Abschlusstest rollt die Seite wie gewohnt.
+
 **Handy und Tablet:** Das Lernpaket passt sich von selbst an die Bildschirmgröße an. Dafür musst du nichts einstellen, es gilt für alle Layouts.
 - Die Leiste oben bleibt einzeilig. Auf dem Handy zeigt sie nur Zeichen (☰, 🔊, ‹ ›), der Fortschritt ist ein dünner Strich darunter.
 - Schritt-Knöpfe, die am Computer links neben dem Inhalt stehen, rücken auf dem Handy als Reihe über den Inhalt. Reiter stehen in einer Zeile, die man seitlich wischen kann.

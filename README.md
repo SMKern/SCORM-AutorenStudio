@@ -14,7 +14,7 @@ Das SCORM-AutorenStudio ist ein Autorenwerkzeug in einer einzigen HTML-Datei. Ei
 
 > **In English:** SCORM-AutorenStudio is a free, open-source authoring tool for e-learning courses. It is a single HTML file that runs offline in Chrome or Edge and builds SCORM 1.2 packages for Moodle. The user interface and the manual are in German.
 
-Aktuelle Version: **3.49.1**
+Aktuelle Version: **3.50.0**
 
 ## Loslegen
 
@@ -42,7 +42,7 @@ Dafür gibt es die vereinfachte Ausgabe `SCORM-AutorenStudio-Lite.html` mit drei
 - **Layouts** zum Austauschen, eigene Layouts per Assistent
 - **Punkte und Abzeichen**
 - **Werkzeuge:** Prüfung, Medien, Suchen & Ersetzen, Druckansicht, Sicherungen
-- **Lernpakete** (SCORM 1.2) für Moodle – auch für Handy und Tablet
+- **Lernpakete** (SCORM 1.2) für Moodle – am Computer mit festem Rahmen (nur der Inhalt rollt), auch für Handy und Tablet
 
 ## Was du brauchst
 
