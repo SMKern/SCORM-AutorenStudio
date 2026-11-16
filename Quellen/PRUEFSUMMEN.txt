@@ -1,6 +1,6 @@
 # Prüfsummen (SHA-256) der Dateien des SCORM-AutorenStudios · nicht von Hand ändern
-b424320f07f96dc8ac4cd7ca56d7914aefff788bea9db3b431dbdb2c4caa8a50  SCORM-AutorenStudio.html
-0810c6197f7761aee66c2b1d450405a84ab5e202aca2d3357531f5b19966d7f1  SCORM-AutorenStudio-Lite.html
+103f49952ced8f35c82a947fc3b5a2cbea1ecf55586c93dee9b4067d8c253b71  SCORM-AutorenStudio.html
+5543f96825214cfcf2a5657284909cac64dd2b7d545a597e0a5837dc4a293b99  SCORM-AutorenStudio-Lite.html
 0cf9046334f988b2481cd4d82c7c12dbace27b3dc799f9924fe92df4285d1a26  Quellen\Lite\Lite-Zusatz.html
 7bbdd089f795eed220183dd01166bb4d9b157e168d127ca3daab77dd15d5a88f  Quellen\Marke\favicon.svg
 a651c593fd3eee9aa0985baf1fd5ff03e884e315b7b6d1fd020d9a1c47ca1f01  Quellen\Marke\favicon-lite.svg
@@ -22,4 +22,4 @@ c7c75dcc571b70c1c7b6f028ebc2f386820d27dc6f332b1c8f43f29c4fd3811a  Quellen\Dokume
 d07ec9b0c0a0c3848d40cd47b0d9eafa2f3d2ec8d2c147f4dae5f1a6638c40f2  Quellen\Dokumente\Sicherheit.md
 522ad2c83bc8a0010e7f0cc60d0892b77c8d2bf2c9702dc12288311d94270f42  Quellen\bausteine\pdf-engine\pdf.min.mjs
 b4c8353ded0d88d2e2009574a29eb4e0c3ff7e942ecdf51ef5f71566a9667f31  Quellen\bausteine\pdf-engine\pdf.worker.min.mjs
-881b855ca708e17c7c72c838710dd0953721573d3a06194186d3d92a1f820f5b  Quellen\werkzeuge\bauen.ps1
+23cbf56c9f1fc67b3bc7015de38033e7f78f91563839238c9619b583743a0628  Quellen\werkzeuge\bauen.ps1

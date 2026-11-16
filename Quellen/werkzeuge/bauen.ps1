@@ -25,6 +25,7 @@
 #  jedes Mal neu erzeugt.
 #
 #  Ausführen: Rechtsklick auf diese Datei → „Mit PowerShell ausführen“
+#  Unter Linux/macOS (PowerShell 7):  pwsh Quellen/werkzeuge/bauen.ps1 -OhnePause
 #
 #  Copyright (c) 2026 Sven-Michael Kern · Lizenziert unter der EUPL, Version 1.2 oder neuer
 # ════════════════════════════════════════════════════════════════════════════
@@ -98,7 +99,7 @@ $teile = ''
 foreach ($l in $liste) { $teile += "<script type=`"application/octet-stream`" class=`"eingebettet-layout`" data-datei=`"$($l.Name)`">$(B64 $l.FullName)</script>`n"; Write-Host "Layout eingebettet: $($l.Name)" }
 $html = Bereich $html 'LAYOUTS' $teile
 # 2b) Grundlage für den Layout-Assistenten (gleicher Aufbau, Farben als Rollen %%…%%)
-$grundlagen = @(Get-ChildItem $layouts -Filter *.layout-vorlage.html)
+$grundlagen = @(Get-ChildItem $layouts -Filter *.layout-vorlage.html | Sort-Object Name)
 $teile = ''
 foreach ($g in $grundlagen) { $teile += "<script type=`"application/octet-stream`" class=`"eingebettet-grundlage`" data-datei=`"$($g.Name)`">$(B64 $g.FullName)</script>`n"; Write-Host "Grundlage eingebettet: $($g.Name)" }
 $html = Bereich $html 'GRUNDLAGE' $teile
@@ -160,7 +161,8 @@ Write-Host 'Fertig. SCORM-AutorenStudio-Lite.html ist aktualisiert.'
 # 4) Prüfsummen (SHA-256): Damit lässt sich später zeigen, ob eine Datei verändert wurde
 $alle = @($studio, $lite, $zusatz, $favicon, $favLite, $engine, $player, $leitner) + @($liste | ForEach-Object FullName) + @($grundlagen | ForEach-Object FullName) + @(Get-ChildItem $dokumente -Filter *.md | Sort-Object Name | ForEach-Object FullName) + @((Join-Path $pdfEngine 'pdf.min.mjs'), (Join-Path $pdfEngine 'pdf.worker.min.mjs')) + @(Get-ChildItem $PSScriptRoot -Filter *.ps1 | Sort-Object Name | ForEach-Object FullName)
 $zeilen = @("# Prüfsummen (SHA-256) der Dateien des SCORM-AutorenStudios · nicht von Hand ändern")
-foreach ($d in ($alle | Select-Object -Unique)) { $zeilen += ('{0}  {1}' -f (Get-FileHash $d -Algorithm SHA256).Hash.ToLower(), $d.Substring($projekt.Length + 1)) }
-[IO.File]::WriteAllLines((Join-Path $quellen 'PRUEFSUMMEN.txt'), $zeilen, $utf8)
+foreach ($d in ($alle | Select-Object -Unique)) { $zeilen += ('{0}  {1}' -f (Get-FileHash $d -Algorithm SHA256).Hash.ToLower(), $d.Substring($projekt.Length + 1).Replace('/', '\')) }
+# Unter Windows und Linux gleich: Pfade immer mit \, Zeilenende immer CRLF
+[IO.File]::WriteAllText((Join-Path $quellen 'PRUEFSUMMEN.txt'), (($zeilen -join "`r`n") + "`r`n"), $utf8)
 Write-Host 'Prüfsummen geschrieben: Quellen\PRUEFSUMMEN.txt'
 if (-not $OhnePause) { Read-Host 'Enter zum Beenden' | Out-Null }
