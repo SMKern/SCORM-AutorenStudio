@@ -1,4 +1,4 @@
-﻿SCORM-AutorenStudio 3.49.0 – Lizenzhinweise
+﻿SCORM-AutorenStudio 3.49.1 – Lizenzhinweise
 ====================================================================
 
 
@@ -67,8 +67,8 @@
 
   Weitere fremde Software, Schriften oder Bilder sind nicht enthalten.
   Die Symbole (Icons) wurden für dieses Programm gezeichnet.
-  Das Vorstellungsvideo (Bilder\SCORM-AutorenStudio-Vorstellung.mp4) wurde
-  für dieses Projekt erstellt. Seine Musik ist per Programm berechnet –
+  Das Vorstellungsvideo (Bilder\SCORM-AutorenStudio-Vorstellung.mp4, dazu
+  die bewegte Fassung ohne Ton als .gif) wurde für dieses Projekt erstellt. Seine Musik ist per Programm berechnet –
   ohne fremde Aufnahmen oder Klangschnipsel – und steht wie das Video
   unter derselben Lizenz wie das Projekt.
   Emojis zeigt der Browser mit der Schrift des jeweiligen Rechners an.
