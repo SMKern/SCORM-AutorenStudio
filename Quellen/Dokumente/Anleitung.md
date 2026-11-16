@@ -144,7 +144,7 @@ Das Studio ist bewusst **ruhig und neutral** gehalten. Farbig sind nur die Inhal
 │ 1 Trainingsgrundlagen  │                                                                                 │
 │   │ Trainingsinfo      │                                                                                 │
 ├────────────────────────┴─────────────────────────────────────────────────────────────────────────────────┤
-│ Statusmeldungen …                                                  © Sven-Michael Kern  mit KI erstellt │
+│ Statusmeldungen …                                                   © Sven-Michael Kern  mit KI erstellt │
 └──────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
