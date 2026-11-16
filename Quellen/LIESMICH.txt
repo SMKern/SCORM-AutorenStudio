@@ -1,4 +1,4 @@
-﻿SCORM-AutorenStudio 3.48.2 – die Quellen
+﻿SCORM-AutorenStudio 3.48.3 – die Quellen
 ====================================================================
 
 Dieser Ordner ist nur für Leute, die das Programm verändern oder
