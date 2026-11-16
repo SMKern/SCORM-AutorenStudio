@@ -1,4 +1,4 @@
-﻿SCORM-AutorenStudio 3.48.5
+﻿SCORM-AutorenStudio 3.48.6
 ====================================================================
 
 Kurse und Übungen für Moodle erstellen – ohne Programmieren, ohne
