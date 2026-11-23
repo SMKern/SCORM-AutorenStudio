@@ -781,7 +781,7 @@
 
 // ── 1) Version und Zustand ───────────────────────────────────────────────────
 // Bei jeder Änderung am Studio: Versionsnummer erhöhen und unten eintragen.
-const STUDIO_VERSION = '3.50.1';
+const STUDIO_VERSION = '3.51.1';
 // Herkunftskennung (Base64, bewusst unauffällig) – Nachweis der Autorenschaft dieses Programms. Nicht entfernen.
 const _HW = 'U3Zlbi1NaWNoYWVsIEtlcm4=';
 // AUSGABE dieses Programms: die öffentliche, quelloffene Ausgabe. Alles, was den Namen des Erstellers, die Hinweise
@@ -793,6 +793,8 @@ const VARIANTE = {
   kiHinweis: 'Transparenzhinweis: Dieses Programm wurde von Sven-Michael Kern mit Unterstützung künstlicher Intelligenz (Claude, Anthropic) entwickelt.',
   // zusätzlicher Absatz im Versionsfenster: die Lizenz in einfachen Worten
   ueberZusatz: '<div class="msg"><b>Freie Software (Open Source):</b> Du darfst dieses Programm kostenlos nutzen, weitergeben und verändern – nach den Bedingungen der <b>EUPL 1.2</b> (Open-Source-Lizenz für die Europäische Union). Wer es verändert weitergibt, gibt den Quelltext unter derselben Lizenz mit. Der Lizenztext steht unter <b>? Hilfe → Lizenz</b> und in der Datei <code>LIZENZ.txt</code>, die lesbaren Quellen liegen im Ordner <code>Quellen</code>. <b>Lernpakete, die du mit dem Programm erstellst, gehören dir</b> – für sie gelten keine Lizenzpflichten. Das Programm wird ohne Gewährleistung bereitgestellt.</div>',
+  studioName: 'SCORM-AutorenStudio',                           // Name des großen Studios (Fenstertitel, „Über“-Fenster) …
+  studioMarke: 'AutorenStudio',                                // … und sein Schriftzug hinter „SCORM“
   liteName: 'SCORM-AutorenStudio Lite',                        // Name der vereinfachten Ausgabe (Lite) …
   liteMarke: 'AutorenStudio Lite',                             // … und ihr Schriftzug hinter „SCORM“
   studioDatei: 'SCORM-AutorenStudio.html',                     // Dateiname des großen Studios (die Lite-Hilfe verweist darauf)
@@ -810,6 +812,8 @@ const ERSTELLER = VARIANTE.ersteller;
 // Versionsgeschichte (erscheint beim Klick auf die Versionsnummer). Die zivile Ausgabe hat ihre eigene Liste:
 // Quellen\Varianten\Zivil\bloecke\versionen.js – jede neue Version bitte in BEIDE Listen eintragen.
 const VERSIONEN = [
+  ['3.51.1', '23.11.2026', 'Fehler behoben: <b>„📦 Aus Datei laden“</b> (….kurs.zip / ….uebung.zip) brach in Chrome und Edge mit „Failed to execute \'showDirectoryPicker\' … Must be handling a user gesture“ ab. Der Browser öffnet das Ordnerfenster nur direkt nach einem Klick – das Lesen der Datei dauerte zu lange. Jetzt erscheint nach dem Lesen ein Fenster mit dem Knopf <b>„📂 Leeren Ordner wählen“</b>. Gleiches Problem ebenfalls behoben: <b>„Als eine Datei sichern“</b> bei großen, ungespeicherten Kursen (erst wird jetzt der Speicherort gewählt, dann gespeichert) und <b>„Ordner öffnen“</b> nach der Rückfrage zu ungespeicherten Änderungen (die Rückfrage ist jetzt ein Fenster mit Knopf „Trotzdem öffnen“). „SCORM-Paket übernehmen“, „PowerPoint/PDF übernehmen“ und „Neuer Kurs/Test/Übung“ waren nicht betroffen.'],
+  ['3.51.0', '16.11.2026', 'Innen aufgeräumt: Name und Fenstertitel des Programms kommen jetzt aus einer zentralen Einstellung. Für dich ändert sich nichts – Programm, Kurse, Übungen und Lernpakete bleiben, wie sie sind.'],
   ['3.50.1', '16.11.2026', 'Nur Werkzeuge, das Programm ist unverändert. Das Bauwerkzeug <code>Quellen/werkzeuge/bauen.ps1</code> läuft jetzt auch unter Linux und macOS mit PowerShell 7 (<code>pwsh</code>). Die Prüfsummen-Datei sieht auf allen Systemen gleich aus.'],
   ['3.50.0', '16.11.2026', 'Lernpakete am Computer: <b>fester Rahmen</b>. Leiste oben, Kopfzeile mit Titel, Schritt-Knöpfe und „Zurück“/„Weiter“ bleiben stehen, nur der Inhalt des offenen Schritts rollt – auch in Moodle. Der Titelbereich oben ist flacher und klappt beim Rollen weiter ein (ohne Einleitung); beim nächsten Schritt ist er wieder vollständig da. Gilt für alle Layouts. Auf dem Handy, in der Übersicht und im Abschlusstest bleibt alles wie bisher. Vorhandene Lernpakete bekommen das, wenn du sie neu erstellst.'],
   ['3.49.1','16.11.2026', 'Die Übersichtsseite zeigt das Vorstellungsvideo jetzt als bewegtes Bild direkt auf der Seite, darunter ein Link zum Video mit Musik. Am Programm selbst ändert sich nichts.'],
@@ -4313,7 +4317,8 @@ async function speichern(still) {
   } finally { ladeWeg(); }
 }
 async function ordnerOeffnen() {
-  if (UNGESPEICHERT && !confirm('Es gibt ungespeicherte Änderungen. Trotzdem etwas anderes öffnen?')) return;
+  // Rückfrage als eigenes Fenster statt confirm(): dessen Knopf-Klick erlaubt das Ordnerfenster (siehe klickAbwarten)
+  if (UNGESPEICHERT && !(await klickAbwarten('Ungespeicherte Änderungen', '<p style="margin-top:0;">Es gibt ungespeicherte Änderungen. Trotzdem etwas anderes öffnen?</p>', 'Trotzdem öffnen'))) return;
   if (!window.showDirectoryPicker) { status('Dieser Browser kann Ordner nicht direkt öffnen. Bitte Chrome oder Edge verwenden – oder den Ordner auf die Startseite ziehen.', 'err'); AUSWAHL = { art: 'start' }; editorZeigen(); return; }
   try {
     const sp = new OrdnerSpeicher(await window.showDirectoryPicker({ mode: 'readwrite', id: 'kursordner' }));
@@ -5171,7 +5176,7 @@ function startZeigen() {
   const offen = PROJEKT === 'uebung' && UEBUNG ? '🧠 ' + UEBUNG.titel : KURS ? KURS.titel : '';
   $('editor').innerHTML = `${EMBLEM_PNG ? `<img src="${EMBLEM_PNG}" alt="" class="start-emblem">` : ''}
   <div class="start">
-    <h1 class="marken-logo"><span class="ml-mark">S</span><span class="ml-scorm">SCORM</span><span class="ml-studio">AutorenStudio</span></h1>
+    <h1 class="marken-logo"><span class="ml-mark">S</span><span class="ml-scorm">SCORM</span><span class="ml-studio">${esc(VARIANTE.studioMarke)}</span></h1>
     <p class="lead">Kurse und Übungen erstellen, bearbeiten und als Lernpaket für Moodle ausgeben – ohne Programmieren.</p>
     ${offen ? `<div class="msg ok">Geöffnet: <b>${esc(offen)}</b>${UNGESPEICHERT ? ' · <b>ungespeicherte Änderungen</b> (bleiben erhalten)' : ''} &nbsp; <button type="button" class="klein" id="weiterKurs">Weiter bearbeiten →</button></div>` : ''}
     <div class="start-spalten">
@@ -6159,6 +6164,19 @@ function untertitelImText(v, merken) {
 // ── 13) Bilder-/Videoauswahl (eigenes Fenster, liegt über dem Fragen-Editor) ─
 function modalZeigen(titel, html, breit) { $('modalTitel').textContent = titel; $('modalRumpf').onclick = null; $('modalRumpf').innerHTML = html; $('modalBox').classList.toggle('breit', !!breit); $('modal').classList.remove('hidden'); }
 function modalZu() { $('modal').classList.add('hidden'); if (modalZu.beimSchliessen) { const f = modalZu.beimSchliessen; modalZu.beimSchliessen = null; f(); } }
+// Chrome/Edge öffnen ein Ordner- oder Speichern-Fenster nur direkt nach einem Klick (höchstens ca. 5 Sekunden danach).
+// Liegt davor Wartezeit (Datei lesen, Rückfrage, Speichern), holt dieses Fenster den nötigen frischen Klick ab.
+// Ergebnis: true = Knopf geklickt (Auswahlfenster darf sofort folgen), false = abgebrochen.
+function klickAbwarten(titel, html, knopf) {
+  return new Promise(fertig => {
+    let ok = false;
+    modalZeigen(titel, `${html}<div class="ff-modal-knoepfe"><button type="button" class="sec" id="kaAbbruch">Abbrechen</button><button type="button" id="kaWeiter" data-zielordner>${knopf}</button></div>`);
+    modalZu.beimSchliessen = () => fertig(ok);
+    $('kaAbbruch').onclick = () => modalZu();
+    $('kaWeiter').onclick = () => { ok = true; modalZu(); };
+    $('kaWeiter').focus();
+  });
+}
 $('modalZu').onclick = modalZu;
 const medienZu = () => { if (medienZu.vorher) { const f = medienZu.vorher; medienZu.vorher = null; f(); } $('modalMedien').classList.add('hidden'); };   // vorher: z. B. laufende Aufnahme beenden
 $('medienZu').onclick = medienZu;
@@ -7344,7 +7362,7 @@ async function hinweisDateiSchreiben() {
     const uebung = PROJEKT === 'uebung';
     await SP.schreiben(HINWEIS_DATEI, '﻿' + [
       `Dieser Ordner ist ${uebung ? 'eine ÜBUNG' : 'ein KURS'} für das SCORM-AutorenStudio.`, '',
-      'Öffnen:      SCORM-AutorenStudio.html starten → „📂 Öffnen“ → diesen Ordner wählen.',
+      'Öffnen:      ' + VARIANTE.studioDatei + ' starten → „📂 Öffnen“ → diesen Ordner wählen.',
       'Für Moodle:  im SCORM-AutorenStudio „📦 Lernpaket erstellen“ – nur die fertige ZIP-Datei hochladen.',
       'Weitergeben: im SCORM-AutorenStudio unter ⚙ ' + (uebung ? 'Übung' : 'Kurs') + ' „Als eine Datei sichern“.', '',
       'Bitte hier nichts von Hand löschen, umbenennen oder verschieben – die Dateien gehören zusammen:',
@@ -7369,10 +7387,11 @@ async function alleDateien(sp, pfad = '') {
 }
 async function projektAlsDatei() {
   if (!SP || !(KURS || UEBUNG)) return;
-  if (UNGESPEICHERT || STRUKTUR_GEAENDERT) await speichern();
   const name = sichererName(SP.name, false) + (PROJEKT === 'uebung' ? '.uebung.zip' : '.kurs.zip');
   let ziel = null;
+  // Erst das Speichern-Fenster (direkt nach dem Klick), DANACH speichern – Speichern großer Kurse dauert länger als die Klick-Berechtigung
   if (window.showSaveFilePicker) { try { ziel = await window.showSaveFilePicker({ suggestedName: name, id: 'kursdateien', types: [{ description: 'SCORM-AutorenStudio-Datei', accept: { 'application/zip': ['.zip'] } }] }); } catch (e) { if (e.name === 'AbortError') return; } }
+  if (UNGESPEICHERT || STRUKTUR_GEAENDERT) await speichern();
   try {
     const pfade = await alleDateien(SP), dateien = [{ name: 'kurs-studio-datei.json', text: JSON.stringify({ format: 'kurs-studio-datei-1', art: PROJEKT, name: SP.name, studioVersion: STUDIO_VERSION, datum: new Date().toISOString(), dateien: pfade.length }, null, 2) }];
     for (const p of pfade) dateien.push({ name: p, blob: await SP.datei(p) });
@@ -7418,7 +7437,11 @@ async function projektAusDatei(datei) {
     const eintraege = await zipLesen(datei), namen = new Set(eintraege.map(x => x.name));
     if (!namen.has('kurs.json') && !namen.has('uebung.json')) throw new Error('Das ist keine Kurs- oder Übungsdatei des SCORM-AutorenStudios (es fehlt kurs.json bzw. uebung.json).');
     const titel = datei.name.replace(/\.(kurs|uebung)?\.?zip$/i, '');
-    if (window.showDirectoryPicker) alert('Wähle jetzt einen LEEREN Ordner, in den der Kurs ausgepackt wird (z. B. neu angelegt unter „Kurse“).');
+    // Nicht alert(): nach dem Lesen der Datei ist die Klick-Berechtigung abgelaufen – erst ein neuer Klick öffnet das Ordnerfenster
+    const istUebung = namen.has('uebung.json') && !namen.has('kurs.json');
+    if (window.showDirectoryPicker && !(await klickAbwarten(istUebung ? 'Übung auspacken' : 'Kurs auspacken',
+      `<div class="msg ok"><b>${esc(datei.name)}</b> ist gelesen (${eintraege.length} Dateien).</div><p>Wähle jetzt einen <b>leeren</b> Ordner, in den ${istUebung ? 'die Übung' : 'der Kurs'} ausgepackt wird (z. B. neu angelegt unter „${istUebung ? 'Uebungen' : 'Kurse'}“).</p>`,
+      '📂 Leeren Ordner wählen'))) return;
     const sp = await leererOrdner(titel); if (!sp) return;
     let n = 0;
     for (const x of eintraege) { if (x.name === 'kurs-studio-datei.json') continue; await sp.schreiben(x.name, await x.lesen()); status(`Wird ausgepackt … ${++n} von ${eintraege.length} Dateien`); }
@@ -9108,7 +9131,7 @@ function akzentAnwenden(hex) {
 // Code-Schrift (code) aus der Liste VERSIONEN bleiben als Auszeichnung erhalten.
 const versionsText = t => esc(t).replace(/&lt;(\/?)(b|code)&gt;/g, '<$1$2>');
 function ueberZeigen() {
-  modalZeigen('Über das SCORM-AutorenStudio', `${EMBLEM_PNG ? `<img src="${EMBLEM_PNG}" alt="" style="float:right;width:84px;height:auto;margin:0 0 10px 14px;">` : ''}<h2 style="margin-top:0;">SCORM-AutorenStudio ${STUDIO_VERSION}</h2>
+  modalZeigen('Über das ' + VARIANTE.studioName, `${EMBLEM_PNG ? `<img src="${EMBLEM_PNG}" alt="" style="float:right;width:84px;height:auto;margin:0 0 10px 14px;">` : ''}<h2 style="margin-top:0;">${esc(VARIANTE.studioName)} ${STUDIO_VERSION}</h2>
     <p>Erstellt von <b>${esc(ERSTELLER)}</b>.</p>
     <div class="msg">${esc(VARIANTE.kiHinweis).replace(/^([^:]{3,40}:)/, '<b>$1</b>')}</div>
     ${VARIANTE.ueberZusatz}
@@ -9173,7 +9196,7 @@ try {
 } catch (e) { status('Start-Fehler: ' + e.message, 'err'); }
 if (LAYOUTS_ABGELEHNT.length) setTimeout(() => status('Sicherheit: Gemerkte Layouts wurden nicht geladen, weil sie unzulässigen Code oder externe Adressen enthalten: ' + LAYOUTS_ABGELEHNT.join(', '), 'err'), 0);
 if (!LAYOUTS.size) status('Kein Layout eingebettet – bitte Quellen\\werkzeuge\\bauen.ps1 ausführen.', 'err');
-document.title = 'SCORM-AutorenStudio ' + STUDIO_VERSION;
+document.title = VARIANTE.studioName + ' ' + STUDIO_VERSION;
 startZeigen();
 
 // Schnittstelle für automatische Tests (im normalen Betrieb nicht benötigt)

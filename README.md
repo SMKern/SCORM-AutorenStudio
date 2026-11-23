@@ -14,7 +14,7 @@ Das SCORM-AutorenStudio ist ein Autorenwerkzeug in einer einzigen HTML-Datei. Ei
 
 > **In English:** SCORM-AutorenStudio is a free, open-source authoring tool for e-learning courses. It is a single HTML file that runs offline in Chrome or Edge and builds SCORM 1.2 packages for Moodle. The user interface and the manual are in German.
 
-Aktuelle Version: **3.50.1**
+Aktuelle Version: **3.51.1**
 
 ## Loslegen
 
@@ -74,16 +74,8 @@ Der Lizenztext liegt in zwei amtlichen, gleichwertigen Sprachfassungen bei: [`LI
 
 ## Mitmachen
 
-Ideen für neue Funktionen und Hinweise auf Fehler sind willkommen – bitte als *Issue* melden. Umsetzung und Prüfung übernehme ich selbst; *Pull Requests* werden derzeit nicht angenommen.
+Fehler gefunden oder eine Idee? Gern als *Issue* melden. Änderungsvorschläge (*Pull Requests*) sind willkommen. Dieses Projekt wird bei jeder neuen Version als Ganzes aus dem Entwicklungsstand des Urhebers erzeugt; übernommene Vorschläge erscheinen deshalb mit der nächsten Version. Beiträge stehen unter derselben Lizenz.
 
 ## Hinweis zur Entstehung (künstliche Intelligenz)
 
 Dieses Programm wurde von Sven-Michael Kern mit Unterstützung künstlicher Intelligenz (Claude, Anthropic) entwickelt. Das Programm selbst enthält keine künstliche Intelligenz und nutzt keine KI-Dienste.
-
-## Mehr dazu im Blog
-
-Wie das Studio entstanden ist und warum ich es gebaut habe, erzähle ich auf meinem Blog AI VERISONDA: https://aiverisonda.com/2026/11/17/scorm-autorenstudio/
-
-## Markenhinweis
-
-SCORM® ist eine eingetragene Marke der ADL-Initiative. Dieses Projekt steht in keiner Verbindung zur ADL. Moodle, PowerPoint, Chrome, Edge und YouTube sind Marken ihrer jeweiligen Inhaber.
