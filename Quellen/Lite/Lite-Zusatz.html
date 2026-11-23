@@ -309,7 +309,7 @@ async function seitenAnsicht(i, k) {
   const istFolie = einSchritt && /data-lm-ia="folie"/.test(schrittHtml(s.schritte[0], s));
   $('editor').innerHTML = `<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
       <h1 style="flex:1;">Seite ${nr} von ${gesamt}</h1>
-      <button type="button" class="sec" id="sVorschau">👁 Vorschau</button>
+      <button type="button" id="sVorschau" title="Diese Seite so ansehen, wie sie im Lernpaket aussieht (neues Fenster)">👁 Vorschau dieser Seite</button>
       <button type="button" class="gefahr" id="sLoeschen">Seite löschen</button></div>
     <div class="kasten"><label for="sTitel">Überschrift der Seite</label><input type="text" id="sTitel" value="${esc(s.titel)}" spellcheck="true"></div>
     <h2>Inhalt <span class="hint">${istFolie ? '(„✎ Folie bearbeiten“ öffnet die Folie wie in PowerPoint · Text unter der Folie = Erläuterung, freiwillig)' : '(Text schreiben oder hineinkopieren · links auf Wunsch ein Bild)'}</span></h2>

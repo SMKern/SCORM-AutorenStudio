@@ -2866,7 +2866,29 @@ var TEXTE = {
     return teile.join(' ').replace(/\s+\./g, '.').replace(/\.\.+/g, '.');
   }
   function teilNr2(a) { return a.length - 1; }
+  // ── Videos und Ton anhalten, die nicht mehr zu sehen sind (SCORM-AutorenStudio 3.52) ──
+  // Wer zu einem anderen Schritt, einer anderen Seite, zur Übersicht oder zum Test wechselt, hört sonst das
+  // Video im Hintergrund weiter. Geprüft wird nach jedem Klick und jedem Seitenwechsel: Was unsichtbar
+  // geworden ist, hält an. YouTube lässt sich ohne Programmierschnittstelle nicht pausieren – ein unsichtbar
+  // gewordenes YouTube-Video wird deshalb neu geladen (es steht danach wieder am Anfang).
+  var ytSichtbar = [];
+  function zuSehen(el) { return el.getClientRects().length > 0; }
+  function medienAnhalten() {
+    Array.prototype.forEach.call(document.querySelectorAll('video, audio'), function (m) {
+      if (!m.paused && !zuSehen(m)) { try { m.pause(); } catch (e) { } }
+    });
+    var jetzt = [];
+    Array.prototype.forEach.call(document.querySelectorAll('iframe[src*="youtube"]'), function (f) {
+      if (zuSehen(f)) { jetzt.push(f); return; }
+      if (ytSichtbar.indexOf(f) >= 0) { var src = f.getAttribute('src'); f.setAttribute('src', 'about:blank'); f.setAttribute('src', src); }
+    });
+    ytSichtbar = jetzt;
+  }
+  function medienSpaeterPruefen() { setTimeout(medienAnhalten, 0); }
+  document.addEventListener('click', medienSpaeterPruefen, true);
+  document.addEventListener('keyup', medienSpaeterPruefen, true);
   function vorlesenStopp() {
+    medienSpaeterPruefen();
     if (!SPRACHE) return;
     liestVor = false; SPRACHE.cancel();
     var k = $('knopfVorlesen'); if (k) { leisteText(k, T('knopfVorlesen')); k.setAttribute('aria-pressed', 'false'); }
