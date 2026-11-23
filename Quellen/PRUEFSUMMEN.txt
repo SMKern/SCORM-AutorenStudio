@@ -1,6 +1,6 @@
 # Prüfsummen (SHA-256) der Dateien des SCORM-AutorenStudios · nicht von Hand ändern
-0fe08f65466e63bcee939266fc26b14192df714449686a60b2b4dbcf13fa3771  SCORM-AutorenStudio.html
-ba4e8526bc332d314a8587ef4d3a8ce5c063cb105167ed1e06851f807adbcb01  SCORM-AutorenStudio-Lite.html
+7b20e64d0213d59354723426940052e0e00f2f2109ad71110efdc333467daee8  SCORM-AutorenStudio.html
+65a8ed13e185fc3601013de56a49c29d5373e239ec8e0da5ed0ae5618420eea5  SCORM-AutorenStudio-Lite.html
 1d901d19935e01f2587706913f721dd84c57c30d2445817a91ab46d4fb69d155  Quellen\Lite\Lite-Zusatz.html
 7bbdd089f795eed220183dd01166bb4d9b157e168d127ca3daab77dd15d5a88f  Quellen\Marke\favicon.svg
 a651c593fd3eee9aa0985baf1fd5ff03e884e315b7b6d1fd020d9a1c47ca1f01  Quellen\Marke\favicon-lite.svg

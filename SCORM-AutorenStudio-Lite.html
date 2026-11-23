@@ -234,6 +234,18 @@
   aside.hidden + .baum-griff, .flaeche.eingeklappt .baum-griff { display: none; }
   body.baum-zieht { cursor: col-resize; user-select: none; }
   body.baum-zieht aside { transition: none; }
+  /* Live-Vorschau rechts neben dem Seiten-Editor (3.54.0) */
+  main.mit-live { padding-right: calc(var(--live-breite, 42vw) + 20px); }
+  .live-panel { position: fixed; right: 0; bottom: 0; width: var(--live-breite, 42vw); z-index: 20; display: flex; flex-direction: column; background: var(--panel); border-left: 1px solid var(--linie); }
+  .live-kopf { display: flex; gap: 6px; align-items: center; padding: 6px 10px; border-bottom: 1px solid var(--linie); font-size: 13px; }
+  .live-kopf button.aktiv, button.sec.aktiv { background: var(--acc-bg); border-color: var(--acc); }
+  .live-flaeche { flex: 1; position: relative; background: #ececec; overflow: hidden; }
+  .live-rahmen { position: absolute; left: 0; top: 0; width: 100%; height: 100%; border: 0; background: #ececec; }
+  .live-rahmen.neu { visibility: hidden; }
+  .live-panel.handy .live-rahmen { width: 390px; left: 50%; transform: translateX(-50%); box-shadow: 0 0 0 1px #b9b9b9; }
+  .live-griff { position: absolute; left: -4px; top: 0; bottom: 0; width: 8px; cursor: col-resize; z-index: 2; touch-action: none; }
+  .live-griff:hover, .live-griff.zieht { background: linear-gradient(90deg, transparent 3px, var(--acc) 3px, var(--acc) 5px, transparent 5px); }
+  body.live-zieht { cursor: col-resize; user-select: none; } body.live-zieht iframe { pointer-events: none; }
   main { flex: 1; overflow: auto; padding: 22px 28px 64px; position: relative; }
   /* Einträge oben im Seitenmenü (Lernpaket, Layout, Werkzeuge …): flach, der gewählte ist farbig hinterlegt */
   .baum-kurs { display: block; width: 100%; text-align: left; font-size: 13px; font-weight: 500; padding: 7px 10px; border-radius: var(--r2); background: none; border: 1px solid transparent; color: var(--text); margin-bottom: 2px; }
@@ -793,7 +805,7 @@
 
 // ── 1) Version und Zustand ───────────────────────────────────────────────────
 // Bei jeder Änderung am Studio: Versionsnummer erhöhen und unten eintragen.
-const STUDIO_VERSION = '3.53.0';
+const STUDIO_VERSION = '3.54.0';
 // Herkunftskennung (Base64, bewusst unauffällig) – Nachweis der Autorenschaft dieses Programms. Nicht entfernen.
 const _HW = 'U3Zlbi1NaWNoYWVsIEtlcm4=';
 // AUSGABE dieses Programms: die öffentliche, quelloffene Ausgabe. Alles, was den Namen des Erstellers, die Hinweise
@@ -824,6 +836,7 @@ const ERSTELLER = VARIANTE.ersteller;
 // Versionsgeschichte (erscheint beim Klick auf die Versionsnummer). Die zivile Ausgabe hat ihre eigene Liste:
 // Quellen\Varianten\Zivil\bloecke\versionen.js – jede neue Version bitte in BEIDE Listen eintragen.
 const VERSIONEN = [
+  ['3.54.0', '23.11.2026', '<b>Live-Vorschau</b> im Seiten-Editor: Der Knopf „🪟 Live-Vorschau“ zeigt rechts neben dem Editor die Seite so, wie sie im Lernpaket aussieht – sie läuft beim Schreiben mit und zeigt den Schritt, in dem du gerade arbeitest. Fragen und Bausteine lassen sich darin ausprobieren. 🖥/📱 schaltet zwischen Computer- und Handybreite, am linken Rand lässt sich die Vorschau breiter oder schmaler ziehen (Doppelklick = Standard). Die Einstellung bleibt für die nächsten Seiten erhalten. Sicherheit: Die Vorschau läuft abgeschottet und hat keinen Zugriff auf das Programm oder den Kursordner.'],
   ['3.53.0', '23.11.2026', 'Weitere Wünsche aus der Community: <b>Ausrichten</b> – in der Werkzeugleiste ⇤ ↔ ⇥ ☰ (links, zentriert, rechts, Blocksatz) für Absätze und Überschriften, auch mehrere auf einmal; über den Griff eines Elements ⇤ ↔ ⇥ für Bilder, Videos, Kästen, Aufklappbereiche und Tabellen als Ganzes. <b>Nebeneinander im Aufklappbereich</b> – Elemente lassen sich jetzt auch innerhalb eines Aufklappbereichs in Spalten stellen, hineinziehen und mit ↑ ↓ wieder herausschieben. <b>Schritt auf eine andere Seite kopieren</b> – 📋 im Kopf eines Schritts, dann auf der Zielseite unten „📋 Kopierten Schritt einfügen“ (Fragen werden dabei als unabhängige Kopie angelegt). <b>Bild mit Info-Punkten</b>: Jeder Punkt kann jetzt zusätzlich ein eigenes Bild zeigen, das mit der Erklärung erscheint.'],
   ['3.52.0', '23.11.2026', 'Wünsche aus der Community: <b>Videos halten an</b>, sobald man im Lernpaket zu einem anderen Schritt, einer anderen Seite, zur Übersicht oder zum Test wechselt – auch Ton und YouTube (YouTube beginnt danach wieder von vorn). Gilt für neu erstellte Lernpakete. <b>Aufklappbereiche</b> im Seiten-Editor: Die Leertaste schreibt in der Überschrift jetzt ein Leerzeichen, statt den Bereich zuzuklappen; ein Klick in die Überschrift setzt nur den Cursor – auf- und zuklappen mit dem Dreieck links. Zugeklappte Bereiche bleiben zu, wenn ein neuer Schritt hinzukommt. <b>Seitenmenü</b> links stufenlos breiter oder schmaler ziehen (am rechten Rand; Doppelklick = Standardbreite); die Breite wird gemerkt. <b>Vorschau</b>: Der Knopf „👁 Vorschau dieser Seite“ ist jetzt hervorgehoben, und jeder Schritt hat ein eigenes 👁, das die Vorschau gleich bei diesem Schritt öffnet.'],
   ['3.51.1', '23.11.2026', 'Fehler behoben: <b>„📦 Aus Datei laden“</b> (….kurs.zip / ….uebung.zip) brach in Chrome und Edge mit „Failed to execute \'showDirectoryPicker\' … Must be handling a user gesture“ ab. Der Browser öffnet das Ordnerfenster nur direkt nach einem Klick – das Lesen der Datei dauerte zu lange. Jetzt erscheint nach dem Lesen ein Fenster mit dem Knopf <b>„📂 Leeren Ordner wählen“</b>. Gleiches Problem ebenfalls behoben: <b>„Als eine Datei sichern“</b> bei großen, ungespeicherten Kursen (erst wird jetzt der Speicherort gewählt, dann gespeichert) und <b>„Ordner öffnen“</b> nach der Rückfrage zu ungespeicherten Änderungen (die Rückfrage ist jetzt ein Fenster mit Knopf „Trotzdem öffnen“). „SCORM-Paket übernehmen“, „PowerPoint/PDF übernehmen“ und „Neuer Kurs/Test/Übung“ waren nicht betroffen.'],
@@ -919,6 +932,7 @@ function geaendert(seite) {
   if (seite) seite.geaendert = true;
   $('btnSpeichern').disabled = false;
   baumZeigen();
+  liveAnstossen();
 }
 const zahlSort = (a, b) => a.localeCompare(b, 'de', { numeric: true });
 const IST_BILD = /\.(jpe?g|png|gif|svg|webp|bmp|avif)$/i, IST_VIDEO = /\.(mp4|webm|ogv|mov|m4v)$/i;
@@ -5272,6 +5286,7 @@ async function ablageLesen(dt) {
 function zurStartseite() { AUSWAHL = { art: 'start' }; baumZeigen(); editorZeigen(); }
 function editorZeigen() {
   $('editor').onclick = null;
+  if (AUSWAHL.art !== 'seite') liveAbbauen();
   if (AUSWAHL.art === 'hilfe') return hilfeAnsicht();
   if (AUSWAHL.art === 'start') return startZeigen();
   if (AUSWAHL.art === 'layout') return layoutAnsicht();
@@ -5398,6 +5413,7 @@ async function seitenAnsicht(i, k) {
   const m = KURS.module[i], s = m && m.seiten[k];
   if (!s) { AUSWAHL = { art: 'modul', m: i }; return editorZeigen(); }
   if (!s.bearbeitbar) {
+    liveAbbauen();
     $('editor').innerHTML = `<h1>${esc(s.titel)}</h1><div class="msg warn">Diese Seite stammt nicht aus einer Layout-Datei und kann hier nicht bearbeitet werden. Bitte in <b>VS Code</b> bearbeiten (Datei <code>seiten/${esc(s.datei)}</code>). Verschieben und Löschen geht trotzdem.</div><button type="button" class="gefahr" id="sLoeschen">Seite löschen</button>`;
     $('sLoeschen').onclick = () => seiteLoeschen(i, k);
     return;
@@ -5406,6 +5422,7 @@ async function seitenAnsicht(i, k) {
   $('editor').innerHTML = `<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
       <h1 style="flex:1;">Seite ${i + 1}.${k + 1}</h1>
       <button type="button" id="sVorschau" title="Diese Seite so ansehen, wie sie im Lernpaket aussieht – in einem neuen Fenster, mit allen Schritten, Fragen und Bausteinen">👁 Vorschau dieser Seite</button>
+      <button type="button" class="sec${LIVE.an ? ' aktiv' : ''}" id="sLive" aria-pressed="${LIVE.an}" title="Live-Vorschau rechts neben dem Editor ein-/ausschalten – läuft beim Schreiben mit und zeigt den Schritt, an dem du gerade arbeitest">🪟 Live-Vorschau</button>
       <button type="button" class="sec" id="sKopie" title="Kopie dieser Seite direkt dahinter anlegen (Fragen werden mitkopiert)">⧉ Duplizieren</button>
       <button type="button" class="gefahr" id="sLoeschen">Seite löschen</button></div>
     <p class="lead">Datei: <code>seiten/${esc(s.datei)}</code> · Modul „${esc(m.titel)}“ · Layout „${esc(LAYOUT.name)}“</p>
@@ -5432,6 +5449,7 @@ async function seitenAnsicht(i, k) {
   $('sIconWeg').onclick = () => { s.icon = ''; geaendert(s); seitenAnsicht(i, k); };
   $('sLoeschen').onclick = () => seiteLoeschen(i, k);
   $('sVorschau').onclick = () => seitenVorschau(i, k);
+  $('sLive').onclick = () => liveSchalten(!LIVE.an);
   $('sKopie').onclick = () => {
     const kopie = neueSeite(neuerDateiname(i, s.titel + ' Kopie'), s.titel + ' (Kopie)');
     Object.assign(kopie, { einleitung: s.einleitung, kopfbild: s.kopfbild, icon: s.icon,
@@ -5444,6 +5462,7 @@ async function seitenAnsicht(i, k) {
   if (SCHRITT_ABLAGE && SCHRITT_ABLAGE.kurs === KURS) $('sSchrittNeu').insertAdjacentElement('afterend', ablageKnopf());
   ablageVerbinden(s, i, k);
   await schritteZeigen(s, i, k);
+  if (LIVE.an) liveAufbauen(s, i, k); else liveAbbauen();
 }
 // Ablage für „📋 Schritt kopieren“ → auf einer anderen Seite „📋 Kopierten Schritt einfügen“ (3.53.0).
 // Gilt nur im geöffneten Kurs (Bilder und Fragen gehören zu ihm); Fragen werden beim Einfügen neu angelegt,
@@ -5607,6 +5626,117 @@ async function seitenVorschau(i, k, schritt) {
   if (schritt > 0) html += `<script>(function(){var b=document.querySelector('[data-step="${+schritt + 1}"]');if(b)b.click();})();<\/script>`;
   fensterOeffnen(html, 'Vorschau: ' + s.titel, fenster);
 }
+// ── Live-Vorschau neben dem Seiten-Editor (3.54.0) ──────────────────────────
+// Rechts neben dem Editor steht die Seite so, wie sie im Lernpaket aussieht, und läuft beim Schreiben mit
+// (kurz nach jeder Änderung). Gezeigt wird der Schritt, in dem gerade geschrieben wird.
+// Sicherheit: Die Vorschau steckt in einem abgeschotteten Rahmen (iframe sandbox="allow-scripts" OHNE
+// allow-same-origin). Skripte darin – Blättern des Layouts, Fragen-Engine – erreichen weder das Studio noch
+// den Kursordner. Deshalb kann der Rahmen die Bild-Adressen des Studios nicht laden: Das Studio schickt
+// Bilder und Videos als Datei-Objekte hinein (postMessage), der Rahmen macht daraus eigene Adressen.
+// Neu aufgebaut wird unsichtbar in einem zweiten Rahmen, der erst nach dem Laden den alten ersetzt (kein Flackern).
+var LIVE = { an: (() => { try { return localStorage.getItem('autorenStudio.live') === '1'; } catch (e) { return false; } })(), handy: false, schritt: 0, scroll: 0, uhr: 0, stand: 0, seite: null };
+const LIVE_RAHMEN = `(function(){
+  var fertig=false;
+  window.addEventListener('message',function(e){
+    var d=e.data; if(!d||d.art!=='lv-medien'||fertig) return; fertig=true;
+    var urls={},p,i,j; for(p in d.medien){ try{urls[p]=URL.createObjectURL(d.medien[p]);}catch(x){} }
+    var alle=document.body.getElementsByTagName('*');
+    for(i=0;i<alle.length;i++){var el=alle[i];for(j=0;j<el.attributes.length;j++){var a=el.attributes[j];if(a.value.indexOf('../medien/')<0)continue;var v=a.value;for(p in urls)v=v.split(p).join(urls[p]);if(v!==a.value)el.setAttribute(a.name,v);}}
+    var m=document.querySelectorAll('video,audio');for(i=0;i<m.length;i++){try{m[i].load();}catch(x){}}
+    if(d.schritt>0){var b=document.querySelector('[data-step="'+(d.schritt+1)+'"]');if(b)b.click();}
+    window.scrollTo(0,d.scroll||0);
+    parent.postMessage({art:'lv-bereit'},'*');
+  });
+  var uhr=0;window.addEventListener('scroll',function(){clearTimeout(uhr);uhr=setTimeout(function(){parent.postMessage({art:'lv-scroll',y:window.scrollY},'*');},150);});
+  document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-step]');if(b)parent.postMessage({art:'lv-schritt',nr:(+b.getAttribute('data-step')||1)-1},'*');},true);
+})();`;
+function liveAbbauen() { const p = $('livePanel'); if (p) p.remove(); $('editor').classList.remove('mit-live'); if (LIVE) LIVE.seite = null; }
+function liveSchalten(an) {
+  LIVE.an = an;
+  try { localStorage.setItem('autorenStudio.live', an ? '1' : '0'); } catch (e) { }
+  const b = $('sLive'); if (b) { b.classList.toggle('aktiv', an); b.setAttribute('aria-pressed', String(an)); }
+  const s = AUSWAHL.art === 'seite' && KURS && KURS.module[AUSWAHL.m] && KURS.module[AUSWAHL.m].seiten[AUSWAHL.s];
+  if (an && s && s.bearbeitbar) liveAufbauen(s, AUSWAHL.m, AUSWAHL.s); else liveAbbauen();
+}
+function liveAufbauen(s, i, k) {
+  if (!LIVE.seite || LIVE.seite.s !== s) { LIVE.schritt = 0; LIVE.scroll = 0; }
+  LIVE.seite = { s, i, k };
+  $('editor').classList.add('mit-live');
+  let p = $('livePanel');
+  if (!p) {
+    p = document.createElement('div'); p.id = 'livePanel'; p.className = 'live-panel';
+    p.innerHTML = `<div class="live-griff" title="Ziehen: Vorschau breiter oder schmaler · Doppelklick: Standardbreite"></div>
+      <div class="live-kopf"><b>🪟 Live-Vorschau</b><span class="hint">läuft beim Schreiben mit</span><span style="flex:1"></span>
+        <button type="button" class="sec klein" data-lv="pc" title="Breite wie am Computer">🖥</button><button type="button" class="sec klein" data-lv="handy" title="Breite wie am Handy">📱</button>
+        <button type="button" class="sec klein" data-lv="neu" title="Vorschau neu laden">⟳</button><button type="button" class="sec klein" data-lv="zu" title="Live-Vorschau schließen">✕</button></div>
+      <div class="live-flaeche" id="liveFlaeche"></div>`;
+    document.body.appendChild(p);
+    p.querySelector('.live-kopf').onclick = e => {
+      const b = e.target.closest('[data-lv]'); if (!b) return;
+      if (b.dataset.lv === 'zu') return liveSchalten(false);
+      if (b.dataset.lv === 'neu') return liveAktualisieren();
+      LIVE.handy = b.dataset.lv === 'handy'; liveLage();
+    };
+    // Breite ziehen (gemerkt wie beim Seitenmenü)
+    const g = p.querySelector('.live-griff');
+    const breite = px => { const b = Math.round(Math.max(300, Math.min(window.innerWidth * 0.7, px))); document.documentElement.style.setProperty('--live-breite', b + 'px'); return b; };
+    try { const w = parseInt(localStorage.getItem('autorenStudio.liveBreite'), 10); if (w) breite(w); } catch (e) { }
+    const bewegen = e => breite(window.innerWidth - e.clientX);
+    const los = () => { g.classList.remove('zieht'); document.body.classList.remove('live-zieht'); document.removeEventListener('pointermove', bewegen); document.removeEventListener('pointerup', los); try { localStorage.setItem('autorenStudio.liveBreite', String(Math.round(p.getBoundingClientRect().width))); } catch (e) { } };
+    g.addEventListener('pointerdown', e => { if (e.button) return; e.preventDefault(); g.classList.add('zieht'); document.body.classList.add('live-zieht'); document.addEventListener('pointermove', bewegen); document.addEventListener('pointerup', los); });
+    g.addEventListener('dblclick', () => { document.documentElement.style.removeProperty('--live-breite'); try { localStorage.removeItem('autorenStudio.liveBreite'); } catch (e) { } });
+  }
+  liveLage(); liveAktualisieren();
+}
+function liveLage() {
+  const p = $('livePanel'); if (!p) return;
+  const r = $('editor').getBoundingClientRect();   // genau so hoch wie die Arbeitsfläche (Statuszeile unten bleibt frei)
+  p.style.top = Math.max(0, r.top) + 'px'; p.style.bottom = Math.max(0, window.innerHeight - r.bottom) + 'px';
+  p.classList.toggle('handy', LIVE.handy);
+  p.querySelector('[data-lv="pc"]').classList.toggle('aktiv', !LIVE.handy); p.querySelector('[data-lv="handy"]').classList.toggle('aktiv', LIVE.handy);
+}
+window.addEventListener('resize', () => liveLage());
+function liveAnstossen() { if (!LIVE || !LIVE.seite || !$('livePanel')) return; clearTimeout(LIVE.uhr); LIVE.uhr = setTimeout(liveAktualisieren, 600); }
+async function liveAktualisieren() {
+  const L = LIVE.seite, flaeche = $('liveFlaeche'); if (!L || !flaeche) return;
+  clearTimeout(LIVE.uhr);
+  const nr = ++LIVE.stand, { s, i, k } = L, m = KURS.module[i]; if (!m) return;
+  let html;
+  try {
+    const info = { modulNr: i + 1, modulTitel: m.titel, module: KURS.module.map(x => x.titel), teilNr: k + 1, kursTitel: KURS.titel };
+    html = seiteBauen(LAYOUT, info, s, s.schritte.map(x => x.editor != null ? vomEditor(x.editor) : s.layoutId !== LAYOUT.id ? gestalten(entstilen(x.inhalt), LAYOUT.stile) : x.inhalt));
+  } catch (e) { return; }
+  const medien = {};
+  for (const p of [...new Set(html.match(/\.\.\/medien\/[^"'\s)<>]+/g) || [])]) { const roh = entities(p); try { medien[roh] = await SP.datei(decodeURIComponent(roh.slice(3))); } catch (e) { } }
+  if (nr !== LIVE.stand || !flaeche.isConnected) return;   // inzwischen gibt es einen neueren Stand
+  const fragen = ENGINE && /data-frage=|data-lm-ia=/.test(html) ? `<script>${ENGINE}<\/script><script>FRAGEN.starten(document.body);FRAGEN.sperreAnbinden(document.body);<\/script>` : '';
+  flaeche.querySelectorAll('iframe.neu').forEach(f => f.remove());
+  const fr = document.createElement('iframe');
+  fr.setAttribute('sandbox', 'allow-scripts'); fr.className = 'live-rahmen neu'; fr.title = 'Live-Vorschau der Seite'; fr.__nr = nr;
+  fr.onload = () => { if (fr.__nr === LIVE.stand) fr.contentWindow.postMessage({ art: 'lv-medien', medien, schritt: LIVE.schritt, scroll: LIVE.scroll }, '*'); else fr.remove(); };
+  fr.srcdoc = `<!DOCTYPE html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"></head><body style="margin:0;padding:12px;background:#ececec;--hauptfarbe:${esc((LAYOUT && LAYOUT.farben.akzent) || '#2b5d8a')};">${html}${fragen}<script>${LIVE_RAHMEN}<\/script></body></html>`;
+  flaeche.appendChild(fr);
+}
+// Nachrichten aus dem Vorschau-Rahmen: nur von den eigenen Rahmen annehmen (Absender wird geprüft)
+window.addEventListener('message', e => {
+  const f = $('liveFlaeche'); if (!f) return;
+  const fr = [...f.querySelectorAll('iframe')].find(x => x.contentWindow === e.source); if (!fr) return;
+  const d = e.data || {};
+  if (d.art === 'lv-bereit') {
+    if (fr.__nr !== LIVE.stand) { fr.remove(); return; }
+    f.querySelectorAll('iframe').forEach(x => { if (x !== fr) x.remove(); });
+    fr.classList.remove('neu');
+  } else if (fr.classList.contains('neu')) return;
+  else if (d.art === 'lv-scroll') LIVE.scroll = Math.max(0, +d.y || 0);
+  else if (d.art === 'lv-schritt') { LIVE.schritt = Math.max(0, +d.nr || 0); LIVE.scroll = 0; }
+});
+// Die Vorschau folgt dem Schritt, in dem gerade geschrieben wird
+$('editor').addEventListener('focusin', e => {
+  if (!LIVE || !LIVE.seite) return;
+  const sch = e.target.closest && e.target.closest('#schritte .schritt'); if (!sch) return;
+  const j = [...document.querySelectorAll('#schritte .schritt')].indexOf(sch);
+  if (j >= 0 && j !== LIVE.schritt) { LIVE.schritt = j; LIVE.scroll = 0; liveAnstossen(); }
+});
 // Vorschau-Fenster: inklusive Fragen-Engine, damit Fragen und Pflichtfragen funktionieren
 function fensterOeffnen(html, titel, fenster) {
   const fragen = ENGINE && /data-frage=|data-lm-ia=/.test(html)
