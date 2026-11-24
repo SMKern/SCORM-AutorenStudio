@@ -528,6 +528,9 @@ Bilder bitte immer über die Knöpfe einfügen, nicht per `Strg + V`. Nur dann l
 
 - **Automatisch speichern:** In den **Studio-Einstellungen** (unten unter ⚙ Kurs bzw. ⚙ Übung) trägst du ein, alle wie viele Minuten das Studio von selbst speichert. 0 = aus. Während ein Fragen-Editor offen ist, wartet das Studio damit.
 - **Beim ersten Speichern nach dem Öffnen** legt das Studio vorher automatisch eine **Sicherung** an (Kapitel 17).
+- **📁 Speichern unter …** (`Strg + Umschalt + S`) speichert den Kurs bzw. die Übung mit allen Seiten, Fragen und Medien in einen **anderen, leeren Ordner**. Im Auswahlfenster legst du ihn mit **Neuer Ordner** an, z. B. unter `Kurse`. Danach arbeitest du im neuen Ordner weiter. Der bisherige Ordner bleibt so, wie er zuletzt gespeichert wurde, mit seinen Sicherungen. Ungespeicherte Änderungen landen nur im neuen Ordner.
+  - **Als eigenes, neues Lernpaket führen** (Häkchen im Fenster): Die Kopie bekommt eine **neue Kennung für Moodle**. Das brauchst du, wenn daraus eine eigene Moodle-Aktivität wird, z. B. eine abgewandelte Fassung für eine andere Zielgruppe. **Ohne Häkchen** bleibt es dasselbe Lernpaket. Lädst du es in Moodle bei der bestehenden Aktivität hoch, behalten alle ihren Fortschritt.
+  - Browser ohne Ordnerzugriff (z. B. Firefox) sichern stattdessen **als eine Datei** (Kapitel 16).
 - **👁 Vorschau** (auf jeder Seite) zeigt die Seite so, wie sie im Kurs aussieht, mit funktionierenden Fragen.
 - **📦 Lernpaket → 👁 Ganzen Kurs ansehen** zeigt den kompletten Kurs mit Übersicht und Fortschritt.
 
@@ -807,6 +810,7 @@ Regel: erst im einen Programm speichern, dann im anderen weitermachen.
 | **Im Kursordner versehentlich etwas gelöscht** | Kurs einfach im Studio öffnen. Es prüft den Ordner und holt Fehlendes aus dem Papierkorb oder der neuesten Sicherung zurück (`kurs.json`, `fragen.json`, Seiten, Layout-Kopie). Unter ⚙ Kurs steht, was repariert wurde. Gelöschte Bilder meldet **🩺 Prüfung**. |
 | **Programmdatei weg oder kaputt** | Die Programmdatei noch einmal von dort holen, wo du sie bekommen hast, oder aus einer eigenen Sicherungskopie. Sie funktioniert für sich allein. |
 | **Kurs an jemand anderen geben** | ⚙ Kurs → **⬇ Kurs als eine Datei sichern**. Die andere Person: Startseite → **📦 Aus Datei laden**. |
+| **Kopie eines Kurses als Ausgangspunkt** | **📁 Speichern unter …** → leeren Ordner wählen. Soll die Kopie in Moodle eine eigene Aktivität werden, das Häkchen **Als eigenes, neues Lernpaket führen** setzen (Kapitel 12). |
 | **Lernpaket zu groß** | **🖼 Medien** → *große Bilder verkleinern*, unbenutzte Dateien aufräumen |
 | **Übung: Frage fehlt im Lernpaket** | Die Frage ist unvollständig (⚠ in der Liste). |
 | **Layout-Datei wird nicht aufgenommen** | Die Prüfung zeigt, welche Regel fehlt (✘). Die Datei danach berichtigen (Regeln: `Quellen\Layouts\LAYOUT-FORMAT.md`). |
