@@ -286,6 +286,8 @@ body {
 .antwort.eckig .antwort-marke { border-radius: 7px; }       /* eckig = mehrere Antworten möglich */
 .antwort-buchstabe { flex: none; min-width: 16px; font-weight: 700; color: var(--text-blass); }
 .antwort-text { flex: 1 1 auto; min-width: 0; overflow-wrap: anywhere; }
+/* Bild in einer Antwort (data-bbild): oben, Text darunter */
+.antwort-text img[data-bbild] { display: block; max-width: min(240px, 100%); max-height: 170px; object-fit: contain; border-radius: 8px; margin: 2px 0 6px; pointer-events: none; }
 .antwort-etikett { flex: none; align-self: center; font-size: 12px; font-weight: 700; }
 /* gewählt (vor dem Prüfen) */
 .antwort.gewaehlt { border-color: var(--hauptfarbe); background: var(--hauptfarbe-hell); }
@@ -453,6 +455,8 @@ body {
   function mischen(a) { for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
   function el(tag, klasse, html) { var e = document.createElement(tag); if (klasse) e.className = klasse; if (html != null) e.innerHTML = html; return e; }
   function alle(w, s) { return Array.prototype.slice.call(w.querySelectorAll(s)); }
+  // Text eines Eintrags für die Antwort-Protokollierung; ein Eintrag nur aus Bild liefert dessen Bildtext
+  function eintragText(e) { var t = e.textContent.replace(/\s+/g, ' ').trim(); if (t) return t; var i = e.querySelector('img'); return i ? (i.getAttribute('alt') || 'Bild') : ''; }
   function kinderMit(w, attr) { return Array.prototype.filter.call(w.children, function (k) { return k.hasAttribute(attr); }); }
 
   // ── Aussehen (Farbe kommt aus --hauptfarbe des Lernpakets bzw. Layouts) ─────
@@ -489,6 +493,10 @@ body {
     '.fe-r{display:flex;align-items:center;gap:10px;background:#fff;border:2px solid #ddd;border-radius:12px;padding:8px 10px;font-size:15px;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;counter-increment:fe-r}' +
     '.fe-r::before{content:counter(fe-r);flex:none;width:24px;height:24px;border-radius:50%;background:var(--fe-a);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center}' +
     '.fe-r .fe-griff{color:#aaa;letter-spacing:-2px}.fe-r .fe-r-text{flex:1}.fe-r.zieht{border-color:var(--fe-a);box-shadow:0 6px 16px rgba(0,0,0,.18)}' +
+    // Bilder in Antworten und Reihenfolge-Einträgen (data-bbild): Bild links bzw. oben, Text daneben; nie selbst ziehbar
+    '.fe-r .fe-r-text:has(img[data-bbild]){display:flex;align-items:center;gap:12px;flex-wrap:wrap}' +
+    '.fe-r img[data-bbild]{flex:none;display:block;max-width:min(150px,40vw);max-height:110px;object-fit:contain;border-radius:8px;pointer-events:none;-webkit-user-drag:none}' +
+    '.fe-opt img[data-bbild]{display:block;max-width:min(240px,100%);max-height:170px;object-fit:contain;border-radius:8px;margin:2px 0 6px;pointer-events:none;-webkit-user-drag:none}' +
     '.fe-r-k{font:inherit;font-size:12px;color:var(--fe-a);background:#fff;border:1px solid #ccc;border-radius:8px;width:30px;height:28px;cursor:pointer}.fe-r-k[disabled]{opacity:.35;cursor:default}' +
     '.fe-r.ok{border-color:#1d7a4a;background:#e3f3ea}.fe-r.nok{border-color:#b3261e;background:#fbe8e7}' +
     // Zahl
@@ -658,7 +666,7 @@ body {
     if (typ === 'single' || typ === 'multi' || (umfrage && f.getAttribute('data-frei') !== '1')) {
       var multi = typ === 'multi' || (umfrage && f.getAttribute('data-mehrfach') === '1'), quellen = alle(f, '[data-opts] > [data-o]'), wahl = [];
       hinweis.textContent = umfrage ? (multi ? T.hUmfrageMehr : T.hUmfrage) : multi ? T.hMulti : ctrl.typ === 'wahrfalsch' ? T.hWahr : T.hSingle;
-      ctrl.antwort = function () { return wahl.slice().sort(function (x, y) { return x - y; }).map(function (nr) { return quellen[nr].textContent.replace(/\s+/g, ' ').trim(); }).join('; '); };
+      ctrl.antwort = function () { return wahl.slice().sort(function (x, y) { return x - y; }).map(function (nr) { return eintragText(quellen[nr]); }).join('; '); };
       var liste = el('div', 'fe-opts'), knoepfeO = [];
       var reihe = quellen.map(function (q, i) { return i; });
       if (mitMischen) mischen(reihe);
@@ -887,7 +895,7 @@ body {
         });
       });
       feld.appendChild(rl); knoepfeReihe();
-      ctrl.antwort = function () { return reiheJetzt().map(function (nr) { return rq[nr].textContent.trim(); }).join(' → '); };
+      ctrl.antwort = function () { return reiheJetzt().map(function (nr) { return eintragText(rq[nr]); }).join(' → '); };
       pruefKnopf.addEventListener('click', function () {
         if (ctrl.gesperrt) return;
         var a = reiheJetzt(), richtig = H('r' + a.join(',')) === hashes[0];
@@ -1010,7 +1018,7 @@ body {
         });
         pruefKnopf.disabled = ctrl.gesperrt || !vWahl.length;
       };
-      ctrl.antwort = function () { return vWahl.map(function (nr) { return vq[nr].textContent.replace(/\s+/g, ' ').trim(); }).join('; '); };
+      ctrl.antwort = function () { return vWahl.map(function (nr) { return eintragText(vq[nr]); }).join('; '); };
       pruefKnopf.addEventListener('click', function () {
         if (!vWahl.length || ctrl.gesperrt) return;
         var richtig = vGezeigt.every(function (nr) { return (vWahl.indexOf(nr) >= 0) === vRichtig[nr]; });

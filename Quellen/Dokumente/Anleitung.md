@@ -162,6 +162,7 @@ Das Studio ist bewusst **ruhig und neutral** gehalten. Farbig sind nur die Inhal
 - Der gewählte Eintrag ist farbig hinterlegt.
 - Unter jedem Modul stehen eingerückt seine Seiten.
 - Die kleinen Pfeile **▲ ▼** rechts verschieben ein Modul oder eine Seite. Sie sind blass, bis die Maus auf der Zeile steht.
+- **Ziehen geht auch:** Seite oder Modul mit gedrückter Maustaste an die neue Stelle ziehen – eine farbige Linie zeigt, wo sie landet. Seiten lassen sich so auch in ein anderes Modul ziehen. In einer Übung genauso mit den Fragen.
 - **●** hinter einem Namen bedeutet: geändert, aber noch nicht gespeichert.
 - **🔒** vor einer Seite bedeutet: Diese Seite hat keinen Layout-Aufbau und lässt sich nur in VS Code bearbeiten.
 
@@ -185,7 +186,8 @@ Das Studio ist bewusst **ruhig und neutral** gehalten. Farbig sind nur die Inhal
 | **Modul hinzufügen** | ganz unten **＋ Modul hinzufügen** → Titel eingeben. Das Modul bekommt automatisch eine erste Seite. |
 | **Seite hinzufügen** | im Modul **＋ Seite hinzufügen** → Titel eingeben |
 | **Seite duplizieren** | Seite öffnen → **⧉ Duplizieren**. Die Kopie steht direkt dahinter. Fragen werden mitkopiert und bekommen eine neue Kennung. |
-| **Reihenfolge ändern** | **▲ ▼** neben Modul oder Seite. Ganz oben bzw. unten wandert die Seite ins vorherige bzw. nächste Modul. |
+| **Reihenfolge ändern** | Modul oder Seite mit gedrückter Maustaste an die neue Stelle **ziehen** – oder **▲ ▼** daneben. Ganz oben bzw. unten wandert die Seite ins vorherige bzw. nächste Modul. |
+| **Etwas rückgängig machen** | **↶** oben (Strg + Z) – Schritt für Schritt zurück; **↷** (Strg + Y) wieder vorwärts. |
 | **Modul bearbeiten** | Modul anklicken. Dort gibt es *Modultitel*, *Kurzbeschreibung* und *Lerndauer* (leer = das Studio schätzt sie, 0 = keine Angabe). |
 | **Seite / Modul löschen** | anklicken → **löschen**. Beim Speichern wandern die Dateien nach `seiten/.papierkorb`. |
 
@@ -423,11 +425,11 @@ Mit der **🎨 Freien Folie** gestaltest du eine Seite **wie in PowerPoint**: Te
 
 | Frageart | So legst du sie an | So beantworten es die Lernenden |
 |---|---|---|
-| **◉ Single-Choice** | Antworten eintragen, die richtige anklicken | eine Antwort wählen |
+| **◉ Single-Choice** | Antworten eintragen, die richtige anklicken (zu jeder Antwort geht auch ein **🖼 Bild**) | eine Antwort wählen |
 | **☑ Multiple-Choice** | alle richtigen Antworten anhaken | alle richtigen wählen |
 | **⚖ Wahr / Falsch** | eine Aussage schreiben, dann „wahr“ oder „falsch“ wählen | entscheiden: wahr oder falsch |
 | **⇄ Drag & Drop** | Felder anlegen und Begriffe zuordnen (siehe unten) | Begriffe auf die Felder ziehen oder erst einen Begriff und dann ein Feld antippen |
-| **↕ Reihenfolge** | Einträge in der **richtigen** Reihenfolge eintragen | Einträge ziehen oder mit ▲ ▼ in die richtige Reihenfolge bringen (sie erscheinen gemischt) |
+| **↕ Reihenfolge** | Einträge in der **richtigen** Reihenfolge eintragen; zu jedem Eintrag geht auch ein **🖼 Bild** (mit oder ohne Text) | Einträge ziehen oder mit ▲ ▼ in die richtige Reihenfolge bringen (sie erscheinen gemischt) |
 | **▭ Lückentext** | Text schreiben, Lücken in `[[doppelte eckige Klammern]]` setzen | Lücken ausfüllen |
 | **# Zahl** | richtige Zahl, optional erlaubte Abweichung (±) und Einheit | eine Zahl eintippen, Komma oder Punkt |
 | **🎯 Klick ins Bild** | Bild wählen, richtige Bereiche ins Bild setzen (siehe unten) | im Bild auf die richtige Stelle klicken |
@@ -528,6 +530,7 @@ Bilder bitte immer über die Knöpfe einfügen, nicht per `Strg + V`. Nur dann l
 
 - **Automatisch speichern:** In den **Studio-Einstellungen** (unten unter ⚙ Kurs bzw. ⚙ Übung) trägst du ein, alle wie viele Minuten das Studio von selbst speichert. 0 = aus. Während ein Fragen-Editor offen ist, wartet das Studio damit.
 - **Beim ersten Speichern nach dem Öffnen** legt das Studio vorher automatisch eine **Sicherung** an (Kapitel 17).
+- **↶ Schritt zurück / ↷ Schritt vorwärts** (oben neben Speichern, `Strg + Z` / `Strg + Y`, solange kein Textfeld angeklickt ist): nimmt die letzten Änderungen am Lernpaket zurück bzw. holt sie wieder. Das gilt für Texte, neue, gelöschte oder verschobene Seiten und Module, Fragen und Einstellungen. Zusammenhängendes Tippen zählt als ein Schritt. Nicht zurückgenommen werden Mediendateien (z. B. gelöschte Bilder unter 🖼 Medien) und ein Layoutwechsel. Im Textfeld selbst gilt weiter dessen eigenes ↶ ↷.
 - **📁 Speichern unter …** (`Strg + Umschalt + S`) speichert den Kurs bzw. die Übung mit allen Seiten, Fragen und Medien in einen **anderen, leeren Ordner**. Im Auswahlfenster legst du ihn mit **Neuer Ordner** an, z. B. unter `Kurse`. Danach arbeitest du im neuen Ordner weiter. Der bisherige Ordner bleibt so, wie er zuletzt gespeichert wurde, mit seinen Sicherungen. Ungespeicherte Änderungen landen nur im neuen Ordner.
   - **Als eigenes, neues Lernpaket führen** (Häkchen im Fenster): Die Kopie bekommt eine **neue Kennung für Moodle**. Das brauchst du, wenn daraus eine eigene Moodle-Aktivität wird, z. B. eine abgewandelte Fassung für eine andere Zielgruppe. **Ohne Häkchen** bleibt es dasselbe Lernpaket. Lädst du es in Moodle bei der bestehenden Aktivität hoch, behalten alle ihren Fortschritt.
   - Browser ohne Ordnerzugriff (z. B. Firefox) sichern stattdessen **als eine Datei** (Kapitel 16).
